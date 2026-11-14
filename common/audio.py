@@ -26,6 +26,26 @@ def synth_voice(text, model, length_scale, out_wav, espeak=None):
     if x.ndim > 1:
         x = x.mean(1)
     x /= 32768.0
+    return _post(x, sr)
+
+
+def synth_voice_kokoro(text, model_dir, voice, speed, out_wav, lang="es"):
+    """Voz neuronal Kokoro (kokoro-onnx). model_dir contiene kokoro-v1.0.onnx y voices-v1.0.bin."""
+    from kokoro_onnx import Kokoro
+    global _KOKORO
+    try:
+        _KOKORO
+    except NameError:
+        _KOKORO = None
+    if _KOKORO is None:
+        _KOKORO = Kokoro(os.path.join(model_dir, "kokoro-v1.0.onnx"), os.path.join(model_dir, "voices-v1.0.bin"))
+    x, sr = _KOKORO.create(text, voice=voice, speed=speed, lang=lang)
+    x = np.asarray(x, np.float32)
+    wavfile.write(out_wav + ".raw.wav", sr, (np.clip(x, -1, 1) * 32767).astype(np.int16))
+    return _post(x, sr)
+
+
+def _post(x, sr):
     fr = Fraction(SR, sr).limit_denominator(1000)
     x = resample_poly(x, fr.numerator, fr.denominator).astype(np.float32)
     x = tighten(x)

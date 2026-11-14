@@ -239,46 +239,55 @@ class Helix:
 class Cylinder:
     """Cilindro a lo largo del eje x."""
 
-    def __init__(self, c, r, length, color, n=20, spin=0.0, stripes=True):
+    def __init__(self, c, r, length, color, n=20, spin=0.0, stripes=True, r_end=None, caps=True, amb=0.5):
         self.c = np.array(c, np.float32)
         self.r, self.L, self.color, self.n, self.spin, self.stripes = r, length, color, n, spin, stripes
+        self.r1 = r if r_end is None else r_end  # radio en el extremo +x (cono si es distinto)
+        self.caps = caps
+        self.amb = amb
         self.shadow = True
 
     def aabb(self):
-        e = np.array([self.L / 2, self.r, self.r], np.float32)
+        R = max(self.r, self.r1)
+        e = np.array([self.L / 2, R, R], np.float32)
         return self.c - e, self.c + e
 
     def items(self, cam):
         n = self.n
         th = np.linspace(0, 2 * np.pi, n, endpoint=False) + self.spin
         x0, x1 = self.c[0] - self.L / 2, self.c[0] + self.L / 2
-        ring = np.stack([np.cos(th), np.sin(th)], 1) * self.r
-        A = np.stack([np.full(n, x0), self.c[1] + ring[:, 1], self.c[2] + ring[:, 0]], 1)
-        B = np.stack([np.full(n, x1), self.c[1] + ring[:, 1], self.c[2] + ring[:, 0]], 1)
+        ring = np.stack([np.cos(th), np.sin(th)], 1)
+        A = np.stack([np.full(n, x0), self.c[1] + ring[:, 1] * self.r, self.c[2] + ring[:, 0] * self.r], 1)
+        B = np.stack([np.full(n, x1), self.c[1] + ring[:, 1] * self.r1, self.c[2] + ring[:, 0] * self.r1], 1)
+        slope = (self.r - self.r1) / max(self.L, 1e-6)
         PA, PB = cam.px(A), cam.px(B)
         depth = float(cam.cam(self.c)[2])
         quads = []
         for i in range(n):
             j = (i + 1) % n
             m = (th[i] + th[j]) / 2
-            nw = np.array([0, math.sin(m), math.cos(m)], np.float32)
+            nw = np.array([slope, math.sin(m), math.cos(m)], np.float32)
+            nw /= np.linalg.norm(nw)
             fc = (A[i] + A[j] + B[i] + B[j]) / 4
             if np.dot(nw, cam.pos - fc) > 0:
                 quads.append(([PA[i], PA[j], PB[j], PB[i]], nw, i))
         caps = []
-        for P, nx, xx in ((PA, -1, x0), (PB, 1, x1)):
+        caps = self.caps if isinstance(self.caps, tuple) else (self.caps, self.caps)
+        for P, nx, xx, rr, on in ((PA, -1, x0, self.r, caps[0]), (PB, 1, x1, self.r1, caps[1])):
+            if not on or rr < 0.05:
+                continue
             nw = np.array([nx, 0, 0], np.float32)
             if np.dot(nw, cam.pos - np.array([xx, self.c[1], self.c[2]])) > 0:
                 caps.append((P, nw))
 
         def draw(d):
             for poly, nw, i in quads:
-                col = shade(self.color, nw)
+                col = shade(self.color, nw, self.amb)
                 if self.stripes and i % 4 == 0:
                     col = tuple(int(c * 0.85) for c in col)
                 d.polygon(poly, fill=col + (255,))
             for P, nw in caps:
-                col = shade(self.color, nw)
+                col = shade(self.color, nw, self.amb)
                 d.polygon(P, fill=col + (255,), outline=tuple(int(c * 0.6) for c in col) + (255,))
         return [(depth, draw)]
 
