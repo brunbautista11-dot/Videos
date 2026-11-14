@@ -335,11 +335,18 @@ class Custom:
 
 # ---------------------------------------------------------------- render
 def render(objs, cam, W, H, grid=True, grid_alpha=60, shadows=True):
-    """Devuelve (capa RGBA de objetos, máscara de sombra float (H, W) en 0..1)."""
+    """Devuelve (capa RGBA de objetos, máscara de sombra float (H, W) en 0..1).
+
+    Los objetos con on_top=True (p. ej. algo apoyado sobre los muelles) se dibujan al final."""
     img = Image.new("RGBA", (W * SS, H * SS), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    for fn in _order(objs, cam):
+    base = [o for o in objs if not getattr(o, "on_top", False)]
+    top = sorted((o for o in objs if getattr(o, "on_top", False)), key=lambda o: -float(cam.cam(o.aabb()[0] / 2 + o.aabb()[1] / 2)[2]))
+    for fn in _order(base, cam):
         fn(d)
+    for o in top:
+        for _, fn in o.items(cam):
+            fn(d)
     img = img.resize((W, H), Image.BOX)
     sh = None
     if shadows:

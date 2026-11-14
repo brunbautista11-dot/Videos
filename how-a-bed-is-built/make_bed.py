@@ -661,17 +661,24 @@ def sc_pocket(c):
     r = 13
     if you > 0:
         h = 16.1 * comp(yx, yz)
-        objs.append(S3.Sphere((yx, 29.2 + h + r + 180 * (1 - land(you)), yz), r, (90, 150, 225)))
+        sph = S3.Sphere((yx, 29.2 + h + r + 180 * (1 - land(you)), yz), r, (90, 150, 225))
+        sph.on_top = True
+        objs.append(sph)
     if par > 0:
         h = 16.1 * comp(px, pz)
-        objs.append(S3.Sphere((px, 29.2 + h + r + 180 * (1 - land(par)), pz), r, (230, 120, 90)))
+        sph = S3.Sphere((px, 29.2 + h + r + 180 * (1 - land(par)), pz), r, (230, 120, 90))
+        sph.on_top = True
+        objs.append(sph)
     f = stage(c, cam, objs)
     header(f, c, 5, "POCKET SPRINGS")
     callout_at(f, c, cam, (SPR_X[4], 40, SPR_Z[10]), "ONE POCKET PER SPRING", 540, 1240, "own", dt=0.0)
+    py3 = (px, 29.2 + 16.1 * comp(px, pz) + 2 * r, pz)
+    yy3 = (yx, 29.2 + 16.1 * comp(yx, yz) + 2 * r, yz)
+    you_left = cam.project(np.array(yy3, np.float32))[0] < cam.project(np.array(py3, np.float32))[0]
     if you > 0:
-        callout(f, cam, (yx, 29.2 + 16.1 * comp(yx, yz) + 2 * r, yz), "YOU", 820, 470, you)
+        callout(f, cam, yy3, "YOU", 260 if you_left else 820, 470, you)
     if par > 0:
-        callout(f, cam, (px, 29.2 + 16.1 * comp(px, pz) + 2 * r, pz), "PARTNER", 260, 470, par, (255, 150, 120))
+        callout(f, cam, py3, "PARTNER", 820 if you_left else 260, 470, par, (255, 150, 120))
     return f
 
 
