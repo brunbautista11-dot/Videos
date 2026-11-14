@@ -414,14 +414,33 @@ def _order(objs, cam):
     # grafo: arista j -> i si i va delante de j (se dibuja j antes)
     ii, jj = np.nonzero(np.triu(ov, 1))
     indeg = np.zeros(n, int)
-    adj = [[] for _ in range(n)]
+    adj = [set() for _ in range(n)]
     for i, j in zip(ii.tolist(), jj.tolist()):
         if front[i, j]:
-            adj[j].append(i)
+            adj[j].add(i)
             indeg[i] += 1
         else:
-            adj[i].append(j)
+            adj[i].add(j)
             indeg[j] += 1
+    hulls = {}
+
+    def hull(i):
+        if i not in hulls:
+            hulls[i] = np.array(_hull(np.stack([sx[i], sy[i]], 1)), np.float32)
+        return hulls[i]
+
+    def refine():
+        """Quita aristas entre objetos cuyas siluetas reales no se solapan en pantalla."""
+        changed = False
+        pend = np.nonzero(~queued)[0].tolist()
+        ps = set(pend)
+        for u in pend:
+            for v in list(adj[u]):
+                if v in ps and not _poly_overlap(hull(u), hull(v)):
+                    adj[u].discard(v)
+                    indeg[v] -= 1
+                    changed = True
+        return changed
     heap = [(-float(depth[i]), i) for i in range(n) if indeg[i] == 0]
     heapq.heapify(heap)
     out, done = [], np.zeros(n, bool)
@@ -429,10 +448,16 @@ def _order(objs, cam):
     for _, i in heap:
         queued[i] = True
     while len(out) < n:
+        if not heap and refine():
+            for i in np.nonzero((~queued) & (indeg <= 0))[0].tolist():
+                queued[i] = True
+                heapq.heappush(heap, (-float(depth[i]), i))
         if not heap:
-            # ciclo: se rompe sacando el objeto pendiente más lejano
+            # ciclo: se rompe con el objeto pendiente que tenga menos dependencias sin resolver
+            # (y, a igualdad, el más lejano)
             rest = np.nonzero(~queued)[0]
-            i = int(rest[np.argmax(depth[rest])])
+            key = indeg[rest] * 1e6 - depth[rest]
+            i = int(rest[np.argmin(key)])
             queued[i] = True
             heapq.heappush(heap, (-float(depth[i]), i))
         _, i = heapq.heappop(heap)
@@ -444,6 +469,20 @@ def _order(objs, cam):
                 queued[j] = True
                 heapq.heappush(heap, (-float(depth[j]), j))
     return out
+
+
+def _poly_overlap(P, Q):
+    """Prueba de ejes separadores entre dos polígonos convexos (con un pequeño margen)."""
+    if len(P) < 3 or len(Q) < 3:
+        return True
+    for poly in (P, Q):
+        e = np.roll(poly, -1, 0) - poly
+        axes = np.stack([-e[:, 1], e[:, 0]], 1)
+        pa = P @ axes.T
+        qa = Q @ axes.T
+        if np.any((pa.max(0) <= qa.min(0) + 0.5) | (qa.max(0) <= pa.min(0) + 0.5)):
+            return False
+    return True
 
 
 def _hull(pts):

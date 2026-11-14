@@ -149,7 +149,10 @@ SPR_Z = np.linspace(-84, 84, 11)
 
 
 def g_springs(compress=None, grow=None, pocket=True, glow_k=0.0, y0=29.2):
-    out = [S3.Box((-75, 28.3, -95), (75, y0, 95), FELT, outline=False)]
+    out = []
+    for xa in np.linspace(-75, 75, 5)[:-1]:
+        for za in np.linspace(-95, 95, 7)[:-1]:
+            out.append(S3.Box((xa, 28.3, za), (xa + 37.5, y0, za + 190 / 6), FELT, outline=False))
     for i, x in enumerate(SPR_X):
         for j, z in enumerate(SPR_Z):
             h = 16.1
@@ -223,6 +226,32 @@ def g_cover(wrap=1.0, tape=1.0, needle=None, dent=None):
             _b(d, cam, box)
             dent(d, cam, box)
     return [S3.Box((-76, y0, -96), (76, y1, 96), COVER, top=top, outline=True)]
+
+
+def clip_below(objs, ymax):
+    """Recorta las capas interiores para que no asomen dentro de la funda."""
+    out = []
+    for o in objs:
+        if isinstance(o, S3.Box):
+            if o.a[1] >= ymax - 0.01:
+                continue
+            if o.b[1] > ymax:
+                o = copy.copy(o)
+                o.b = o.b.copy()
+                o.b[1] = ymax
+            out.append(o)
+        elif isinstance(o, S3.Helix):
+            if o.c[1] >= ymax - 0.5:
+                continue
+            if o.c[1] + o.h > ymax:
+                o = copy.copy(o)
+                frac = (ymax - o.c[1]) / o.h
+                o.turns = max(0.3, o.turns * frac)
+                o.h = ymax - o.c[1]
+            out.append(o)
+        else:
+            out.append(o)
+    return out
 
 
 def g_bedding(p_duvet=1.0, p_pillow=1.0):
@@ -435,7 +464,7 @@ def sc_wood(c):
     for a, b in PLANKS:
         objs += S3.split_box(a, b, 2, 5, col, grain=2)
     for a, b in STICKS:
-        objs.append(S3.Box(a, b, WOOD_D, grain=0))
+        objs += S3.split_box(a, b, 0, 4, WOOD_D, grain=0)
     f = stage(c, cam, objs)
     header(f, c, 0, "THE WOOD")
     if c.t > tk:
@@ -531,7 +560,7 @@ def sc_slats(c):
         u = c.t - tb - i * 0.03
         if u < 0:
             return 0.0
-        return 3.2 * math.sin(u * 16) * math.exp(-u * 2.2)
+        return 3.2 * abs(math.sin(u * 16)) * math.exp(-u * 2.2)
     cam = orbit(c, 0.5, 0.06, 0.55, 520, (0, 25, 0))
     slats = sum(clamp((c.t - t0 - i * step) / 0.35) for i in range(14))
     progress = [clamp((c.t - t0 - i * step) / 0.35) for i in range(14)]
@@ -709,7 +738,8 @@ def sc_cover(c):
     needle = []
     drop = 140 * (1 - land((c.t - t0) / 0.5))
     cov = moved(g_cover(wrap=wrap, tape=tape, needle=needle), (0, drop, 0))
-    inner = [] if wrap >= 1 else g_springs(pocket=False) + g_layer("felt") + g_layer("hr") + g_layer("mem")
+    inner = [] if wrap >= 1 else clip_below(g_springs(pocket=False) + g_layer("felt") + g_layer("hr") + g_layer("mem"),
+                                            cov[0].aabb()[0][1] if drop < 0.5 else 1e9)
     f = stage(c, cam, frame_parts() + base_parts() + inner + cov)
     if needle and 0 < tape < 1:
         x, y, _ = cam.project(np.array(needle[0], np.float32))
@@ -725,9 +755,10 @@ def sc_test(c):
     z = 72 * math.sin(c.g * 1.5)
     cam = orbit(c, 0.62, 0.05, 0.36, 520, (0, 45, 0))
     r = 12
-    roller = S3.Cylinder((0, 61 + r - 1.5, z), r, 168, (150, 156, 168), n=20, spin=-z / r)
+    roller = S3.Cylinder((0, 61 + r, z), r, 168, (150, 156, 168), n=20, spin=-z / r)
     posts = [S3.Box((x0, 0, z - 3), (x0 + 6, 76, z + 3), (95, 100, 112)) for x0 in (-96, 90)]
-    axle = [S3.Box((-90, 71, z - 1.2), (90, 73.5, z + 1.2), (95, 100, 112), shadow=False)]
+    axle = [S3.Box((-90, 61 + 2 * r + 0.5, z - 1.2), (-84, 61 + 2 * r + 3, z + 1.2), (95, 100, 112), shadow=False),
+            S3.Box((84, 61 + 2 * r + 0.5, z - 1.2), (90, 61 + 2 * r + 3, z + 1.2), (95, 100, 112), shadow=False)]
     f = stage(c, cam, frame_parts() + base_parts() + g_cover() + [roller] + posts + axle)
     header(f, c, 8, "TESTING")
     cyc = int(30000 * ease_out(c.t / c.T))
