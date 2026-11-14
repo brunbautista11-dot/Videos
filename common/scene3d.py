@@ -272,8 +272,8 @@ class Cylinder:
             if np.dot(nw, cam.pos - fc) > 0:
                 quads.append(([PA[i], PA[j], PB[j], PB[i]], nw, i))
         caps = []
-        caps = self.caps if isinstance(self.caps, tuple) else (self.caps, self.caps)
-        for P, nx, xx, rr, on in ((PA, -1, x0, self.r, caps[0]), (PB, 1, x1, self.r1, caps[1])):
+        capf = self.caps if isinstance(self.caps, tuple) else (self.caps, self.caps)
+        for P, nx, xx, rr, on in ((PA, -1, x0, self.r, capf[0]), (PB, 1, x1, self.r1, capf[1])):
             if not on or rr < 0.05:
                 continue
             nw = np.array([nx, 0, 0], np.float32)

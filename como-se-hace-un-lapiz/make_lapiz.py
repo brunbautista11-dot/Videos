@@ -489,7 +489,7 @@ SHAV = [(float(a), float(b), float(s)) for a, b, s in np.random.default_rng(9).u
 def sc_sharpen(c):
     ts = c.wt("punta") - 0.3
     sh = clamp((c.t - ts) / 0.9)
-    cam = orbit(c, -0.9, 0.05, 0.3, 220, (-50, YC, 0))
+    cam = orbit(c, -0.9, 0.04, 0.35, 320, (-40, YC, 0))
     objs = pencil(0, paint=1, ferrule=1, eraser=1, stamp=1, sharp=sh)
     f = stage(c, cam, objs)
     header(f, c, 9, "LA PUNTA")
