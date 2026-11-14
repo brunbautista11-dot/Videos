@@ -22,7 +22,8 @@ from multiprocessing import Pool
 import numpy as np
 from PIL import Image, ImageDraw
 
-import audio as A
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "common"))
+import audio as A  # noqa: E402
 from engine import (FPS, H, ICE, W, WHITE, YELLOW, Frame, Planet, Stars, Sun, clamp, draw_caption,
                     ease_out, ease_out_back, glow, grad_mix, group_words, label_font, lerp, lerp_c, smooth,
                     text_big, text_label, vgrad)

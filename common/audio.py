@@ -252,3 +252,82 @@ def duck(music, voice, depth=0.6):
 def write_wav(path, stereo):
     y = np.tanh(stereo * 1.1) * 0.95
     wavfile.write(path, SR, (y * 32767).astype(np.int16))
+
+
+# ---------------------------------------------------------------- efectos de taller
+def thunk(dur=0.35, f=150):
+    """Golpe de madera."""
+    t = t_axis(dur)
+    body = np.sin(2 * np.pi * f * t) * np.exp(-t * 22) + 0.5 * np.sin(2 * np.pi * f * 2.3 * t) * np.exp(-t * 35)
+    nz = lp(noise(dur, 21), 1800) * np.exp(-t * 45) * 3
+    return (body + nz) * np.minimum(1, t * 800)
+
+
+def clink(dur=0.6):
+    """Golpe metálico."""
+    t = t_axis(dur)
+    out = np.zeros_like(t)
+    for f, a, d in [(1870, 1, 9), (2710, 0.7, 12), (4130, 0.5, 16), (5390, 0.3, 20), (920, 0.4, 7)]:
+        out += a * np.sin(2 * np.pi * f * t) * np.exp(-t * d)
+    return out * 0.35 * np.minimum(1, t * 2000)
+
+
+def boing(dur=0.7):
+    t = t_axis(dur)
+    f = 210 * (1 + 0.22 * np.sin(2 * np.pi * 17 * t) * np.exp(-t * 4))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    return np.sin(ph) * np.exp(-t * 4.5) * np.minimum(1, t * 600) * 0.8
+
+
+def sew(dur):
+    t = t_axis(dur)
+    clicks = (np.sin(2 * np.pi * 24 * t) > 0.92).astype(np.float32)
+    clicks = bp(clicks, 1500, 6000) * 3
+    motor = lp(np.sign(np.sin(2 * np.pi * 96 * t)).astype(np.float32), 900) * 0.25
+    env = np.minimum(1, np.minimum(t * 20, (dur - t) * 20))
+    return (clicks + motor) * env
+
+
+def fizz(dur, seed=31):
+    rng = np.random.default_rng(seed)
+    n = int(dur * SR)
+    imp = (rng.random(n) > 0.997).astype(np.float32) * rng.uniform(0.2, 1, n).astype(np.float32)
+    x = bp(imp, 2000, 9000) * 4 + bp(noise(dur, seed), 3000, 10000) * 0.4
+    t = t_axis(dur)
+    return x * np.minimum(1, np.minimum(t * 3, (dur - t) * 3))
+
+
+def rumble(dur, seed=33):
+    t = t_axis(dur)
+    x = lp(noise(dur, seed), 220, 2) * 4
+    return x * (0.7 + 0.3 * np.sin(2 * np.pi * 1.6 * t)) * np.minimum(1, np.minimum(t * 2, (dur - t) * 2))
+
+
+def pop(dur=0.12):
+    t = t_axis(dur)
+    f = 700 * np.exp(-t * 18) + 250
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    return np.sin(ph) * np.exp(-t * 30) * 0.7
+
+
+def kick(dur=0.4):
+    t = t_axis(dur)
+    f = 110 * np.exp(-t * 28) + 45
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    return np.sin(ph) * np.exp(-t * 7) * np.minimum(1, t * 3000)
+
+
+def snare(dur=0.2, seed=41):
+    t = t_axis(dur)
+    return (bp(noise(dur, seed), 900, 7000) * 3 * np.exp(-t * 22) + np.sin(2 * np.pi * 190 * t) * np.exp(-t * 30) * 0.5)
+
+
+def hat(dur=0.05, seed=43):
+    t = t_axis(dur)
+    return bp(noise(dur, seed), 7000, 16000) * 3 * np.exp(-t * 90)
+
+
+def bass_note(freq, dur=0.28):
+    t = t_axis(dur)
+    x = sum((1 / h) * np.sin(2 * np.pi * freq * h * t) for h in range(1, 7))
+    return lp(x.astype(np.float32), 600) * np.exp(-t * 6) * np.minimum(1, t * 400)

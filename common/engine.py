@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 W, H, FPS = 1080, 1920, 30
 HERE = os.path.dirname(os.path.abspath(__file__))
-FONTS = os.path.join(HERE, "assets", "fonts")
+FONTS = os.path.join(HERE, "fonts")
 
 YELLOW = (255, 214, 10)
 WHITE = (255, 255, 255)
