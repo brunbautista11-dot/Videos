@@ -17,7 +17,12 @@ from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 W, H = 1080, 1920
 WORK = sys.argv[1] if len(sys.argv) > 1 else "build"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "what-if-the-sun-disappeared.mp4"
-VOICE = ["espeak-ng", "-v", "en-us", "-s", "165", "-p", "35"]
+# Voz neuronal Piper (https://github.com/rhasspy/piper). Descarga la voz con:
+#   curl -LO https://github.com/rhasspy/piper/releases/download/v0.0.2/voice-en-us-lessac-medium.tar.gz
+# y apunta PIPER_MODEL al .onnx. Sin modelo, se usa espeak-ng.
+PIPER_MODEL = os.environ.get("PIPER_MODEL", "voices/voice-en-us-lessac-medium/en-us-lessac-medium.onnx")
+PIPER_LENGTH = "0.92"  # >1 más lento, <1 más rápido
+ESPEAK = ["espeak-ng", "-v", "en-us", "-s", "165", "-p", "35"]
 PAD = 0.25
 FPS = 30
 
@@ -331,6 +336,20 @@ def run(cmd):
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+def tts(text, wav):
+    if os.path.exists(PIPER_MODEL):
+        raw = wav + ".raw.wav"
+        subprocess.run(["piper", "-m", PIPER_MODEL, "--length-scale", PIPER_LENGTH, "-f", raw],
+                       input=text.encode(), check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # acorta las pausas largas que a veces mete el modelo
+        run(["ffmpeg", "-y", "-i", raw, "-af",
+             "silenceremove=start_periods=1:start_threshold=-45dB:stop_periods=-1:stop_duration=0.5"
+             ":stop_silence=0.35:stop_threshold=-45dB", wav])
+    else:
+        print("aviso: no se encontró", PIPER_MODEL, "- usando espeak-ng", flush=True)
+        run(ESPEAK + ["-w", wav, text])
+
+
 def duration(path):
     return float(subprocess.check_output(
         ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path]))
@@ -342,7 +361,7 @@ def main():
     for i, (fn, text, cap) in enumerate(BEATS):
         png, wav, mp4 = (os.path.join(WORK, f"{i:02d}.{e}") for e in ("png", "wav", "mp4"))
         caption(fn(), cap).save(png)
-        run(VOICE + ["-w", wav, text])
+        tts(text, wav)
         dur = duration(wav) + PAD
         frames = int(dur * FPS) + 1
         zin = i % 2 == 0  # alterna zoom de entrada y de salida
