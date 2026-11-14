@@ -257,7 +257,7 @@ def sc_hook(c):
     tp = c.wt("plomo") - 0.1
     if c.t > tp:
         k = ease_out_back((c.t - tp) / 0.3)
-        text_big(f, 540, 1180, "0 g DE PLOMO", int(110 * max(0.3, k)), (255, 90, 80), clamp(k * 2), stroke=8)
+        text_big(f, 540, 1300, "0 g DE PLOMO", int(110 * max(0.3, k)), (255, 90, 80), clamp(k * 2), stroke=8)
     return f
 
 
@@ -543,7 +543,7 @@ def sc_fact(c):
     P = np.stack([xs, np.zeros_like(xs), 9 * np.sin(xs / 11) + 5 * np.sin(xs / 5.3)], 1).astype(np.float32)
     px, py, _ = cam.project(P)
     img, d = f.layer()
-    d.line(list(zip(px.tolist(), py.tolist())), fill=(70, 72, 82, 255), width=7, joint="curve")
+    d.line(list(zip(px.tolist(), py.tolist())), fill=(185, 190, 205, 255), width=9, joint="curve")
     f.comp(img)
     img2, sh = S3.render(objs, cam, W, H)
     if sh is not None:
