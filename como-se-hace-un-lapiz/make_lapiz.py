@@ -221,7 +221,8 @@ def header(f, c, step, title):
 
 
 def orbit(c, yaw0, speed, pitch, dist, target=(0, 5, 0)):
-    return S3.Camera(yaw0 + speed * c.g, pitch, dist, target)
+    # el giro depende del tiempo de la escena, no del total, para que cada plano quede encuadrado
+    return S3.Camera(yaw0 + speed * c.t, pitch, dist, target)
 
 
 class Ctx:
@@ -240,8 +241,8 @@ class Ctx:
 
 
 # ================================================================ escenas
-def hero(c, yaw0=-0.6, title=True):
-    cam = S3.Camera(yaw0 + 0.25 * c.g, 0.45, 400, (8, 6, 0))
+def hero(c, yaw0=0.55, title=True):
+    cam = S3.Camera(yaw0 + 0.1 * c.t, 0.55, 340, (6, 6, 0))
     objs = pencil(0, paint=1, sharp=1, ferrule=1, eraser=1, stamp=1)
     f = stage(c, cam, objs)
     return f, cam
@@ -251,8 +252,8 @@ def sc_hook(c):
     f, cam = hero(c)
     pop = ease_out_back((c.t - 0.3) / 0.4)
     if c.t > 0.3:
-        text_label(f, 540, 170, "CÓMO SE HACE", 46, ACCENT, clamp(pop * 2))
-        text_big(f, 540, 300, "EL LÁPIZ", int(190 * (0.6 + 0.4 * pop)), WHITE, clamp(pop * 2))
+        text_label(f, 540, 140, "CÓMO SE HACE", 46, ACCENT, clamp(pop * 2))
+        text_big(f, 540, 320, "EL LÁPIZ", int(190 * (0.6 + 0.4 * pop)), WHITE, clamp(pop * 2))
     tp = c.wt("plomo") - 0.1
     if c.t > tp:
         k = ease_out_back((c.t - tp) / 0.3)
@@ -260,11 +261,11 @@ def sc_hook(c):
     return f
 
 
-GRAINS = [(float(x), float(z), float(r)) for x, z, r in np.random.default_rng(3).uniform([-1, -1, 2.5], [1, 1, 4.5], (40, 3))]
+GRAINS = [(float(x), float(z), float(r)) for x, z, r in np.random.default_rng(3).uniform([-1, -1, 5.0], [1, 1, 8.0], (36, 3))]
 
 
 def sc_mix(c):
-    cam = orbit(c, 0.5, 0.06, 0.32, 330, (0, 30, 0))
+    cam = orbit(c, 0.25, 0.04, 0.32, 360, (0, 30, 10))
     tm = c.wt("mezcla") - 0.2
     k = smooth(tm, tm + 2.5, c.t)
     drum = S3.Cylinder((0, 42, 0), 38, 90, STEEL, n=24, spin=c.g * 3 * (0.3 + k))
@@ -276,11 +277,11 @@ def sc_mix(c):
             break
         side = -1 if i % 2 == 0 else 1
         col = GRAPH if i % 2 == 0 else CLAY
-        objs.append(S3.Sphere((side * 82 + px * 14 * s, pr * s, 50 + pz * 14 * s), pr * s, col))
+        objs.append(S3.Sphere((side * 70 + px * 18 * s, pr * s, 60 + pz * 18 * s), pr * s, col))
     f = stage(c, cam, objs)
     header(f, c, 0, "LA MEZCLA")
-    callout_at(f, c, cam, (-82, 6, 50), "GRAFITO", 250, 1200, "grafito", dt=0.0)
-    callout_at(f, c, cam, (82, 6, 50), "ARCILLA", 830, 1200, "arcilla", dt=0.0, color=(230, 200, 150))
+    callout_at(f, c, cam, (-70, 8, 60), "GRAFITO", 250, 1200, "grafito", dt=0.0)
+    callout_at(f, c, cam, (70, 8, 60), "ARCILLA", 830, 1200, "arcilla", dt=0.0, color=(230, 200, 150))
     callout_at(f, c, cam, (0, 80, 0), "AGUA", 540, 470, "agua", dt=0.0, color=(120, 190, 255))
     return f
 
@@ -332,7 +333,7 @@ def sc_hard(c):
 def sc_kiln(c):
     tx = 0.2
     te = c.wt("hornean") - 0.3
-    cam = orbit(c, 0.65, 0.05, 0.4, 330, (0, 10, 0))
+    cam = orbit(c, 0.4, 0.03, 0.3, 300, (-40, 22, 0)) if c.t < c.wt("hornean") - 0.9 else orbit(c, 0.45, 0.03, 0.42, 380, (-10, 12, 0))
     ext = [S3.Box((-140, 0, -25), (-100, 50, 25), STEEL)]
     rods = []
     grow = ease_out((c.t - tx) / 2.2)
@@ -341,7 +342,7 @@ def sc_kiln(c):
     if c.t < te - 0.6:
         L = 200 * grow
         if L > 1:
-            rods.append(S3.Cylinder((-100 + L / 2, 25, 0), LEAD_R * 1.4, L, GRAPH, n=10, stripes=False))
+            rods.append(S3.Cylinder((-100 + L / 2, 25, 0), 2.2, L, (96, 100, 112), n=12, stripes=False))
         objs = ext + rods
     else:
         tray = [S3.Box((-100, 0, -40), (100, 4, 40), (95, 100, 112))]
@@ -363,7 +364,7 @@ def sc_kiln(c):
 
 def sc_wax(c):
     tw = 0.3
-    cam = orbit(c, 0.6, 0.05, 0.38, 330, (0, 12, 0))
+    cam = orbit(c, 0.45, 0.03, 0.42, 360, (0, 12, 0))
     tray = [S3.Box((-104, 0, -44), (104, 3, 44), (95, 100, 112)),
             S3.Box((-104, 3, -44), (104, 12, 44), WAX, amb=0.65)]
     dip = land((c.t - tw) / 0.9)
@@ -378,7 +379,7 @@ def sc_wax(c):
 
 
 def sc_wood(c):
-    cam = orbit(c, 0.55, 0.06, 0.55, 370, (0, 2, 0))
+    cam = orbit(c, 0.45, 0.04, 0.6, 340, (0, 2, 0))
     tg = c.wt("canales") - 0.6
     prog = clamp((c.t - tg) / 1.8)
     objs = slat(0, 3.6, top=grooves_top(prog))
@@ -397,7 +398,7 @@ def sandwich_times(c):
 def sc_sandwich(c):
     tm, tgl, tt = sandwich_times(c)
     k = ease_io((c.t - tt - 0.6) / 1.5)
-    cam = S3.Camera(0.55 + 0.06 * c.g, lerp(0.55, 0.3, k), lerp(300, 330, k), (0, 4, 0))
+    cam = S3.Camera(0.45 + 0.04 * c.t, lerp(0.6, 0.38, k), lerp(330, 340, k), (0, 4, 0))
     glue = clamp((c.t - tgl) / 0.8)
     objs = slat(0, 3.6, top=grooves_top(1.0, glue))
     for i, z in enumerate(ZS):
@@ -410,20 +411,25 @@ def sc_sandwich(c):
     tp = tt + 0.6
     if c.t > tp:
         press = ease_out((c.t - tp) / 0.4)
-        objs += [S3.Box((-SLAT_L - 2, 9.2 + 30 * (1 - press), -HALF_W - 4), (SLAT_L + 2, 15 + 30 * (1 - press),
-                                                                           HALF_W + 4), (95, 100, 112))]
+        for xa in (-SLAT_L + 6, SLAT_L - 18):
+            objs.append(S3.Box((xa, 9.2 + 30 * (1 - press), -HALF_W - 6), (xa + 12, 15 + 30 * (1 - press),
+                                                                         HALF_W + 6), (95, 100, 112)))
     f = stage(c, cam, objs)
     header(f, c, 5, "EL SÁNDWICH")
-    callout_at(f, c, cam, (40, YC + 1, ZS[6]), "MINA", 820, 470, "mina", dt=0.4)
-    callout_at(f, c, cam, (-70, 3.6, ZS[2] + PITCH / 2), "PEGAMENTO", 280, 1230, "pegamento", dt=0.4,
-               color=(240, 240, 230))
+    if c.t < tt + 0.2:
+        callout_at(f, c, cam, (40, YC + 1, ZS[6]), "MINA", 820, 470, "mina", dt=0.4)
+    else:
+        callout(f, cam, (0, 9.2, 10), "SÁNDWICH", 820, 470, ease_out((c.t - tt - 0.2) / 0.3))
+    if c.t < tt + 0.2:
+        callout_at(f, c, cam, (-70, 3.6, ZS[2] + PITCH / 2), "PEGAMENTO", 280, 1230, "pegamento", dt=0.4,
+                   color=(240, 240, 230))
     return f
 
 
 def sc_cut(c):
     ts = c.wt("corta") - 0.3
     tsep = c.wt("nueve") - 0.4
-    cam = orbit(c, 0.7, 0.05, 0.42, 320, (0, 4, 0))
+    cam = orbit(c, 0.45, 0.04, 0.5, 360, (0, 4, 0))
     sweep = clamp((c.t - ts) / 1.0)
     sep = ease_out_back((c.t - tsep) / 0.6) if c.t > tsep else 0.0
     objs = []
@@ -453,19 +459,30 @@ def sc_cut(c):
 def sc_paint(c):
     th = c.wt("hexágono") - 0.3
     tp = c.wt("pintura") - 0.4
-    paint = clamp((c.t - tp) / 1.6)
-    end_view = 1 - ease_io((c.t - th - 1.4) / 1.0)
-    cam = S3.Camera(lerp(0.65, -1.35, end_view), lerp(0.35, 0.12, end_view), lerp(300, 120, end_view),
-                    (lerp(0, -88, end_view), YC, 0))
-    objs = []
-    for i, z in enumerate(ZS[2:7]):
-        objs += pencil(z + (i - 2) * 9, paint=clamp(paint * 1.2 - i * 0.05))
-    f = stage(c, cam, objs)
+    tcut = c.wt("después") - 0.15
+    if c.t < tcut:
+        # vista de frente: los extremos hexagonales
+        cam = S3.Camera(-1.2 + 0.05 * c.t, 0.22, 175, (-88, YC + 2, 0))
+        objs = []
+        for i, z in enumerate(ZS[2:7]):
+            objs += pencil(z + (i - 2) * 9)
+        f = stage(c, cam, objs)
+        if c.t > th:
+            pop = ease_out_back((c.t - th) / 0.35)
+            text_big(f, 540, 1180, "6 LADOS", int(120 * max(0.3, pop)), ACCENT, clamp(pop * 2), stroke=8)
+            text_label(f, 540, 1290, "ASÍ NO RUEDA", 40, WHITE, clamp((c.t - th - 0.3) * 3))
+    else:
+        u = c.t - tcut
+        paint = clamp((c.t - tp) / 1.8)
+        cam = S3.Camera(0.5 + 0.03 * u, 0.5, 330, (0, YC, 0))
+        objs = []
+        for i, z in enumerate(ZS[2:7]):
+            objs += pencil(z + (i - 2) * 9, paint=clamp(paint * 1.25 - i * 0.06))
+        f = stage(c, cam, objs)
+        if c.t > tp:
+            text_label(f, 540, 1200, "VARIAS CAPAS DE LACA", 44, PAINT, ease_out((c.t - tp - 0.3) / 0.3))
+        f.fill((255, 255, 255), 0.6 * (1 - ease_out(u / 0.3)))
     header(f, c, 7, "LA PINTURA")
-    if end_view > 0.5 and c.t > th:
-        text_big(f, 540, 1180, "6 LADOS", 110, ACCENT, clamp((c.t - th) * 3) * clamp((end_view - 0.5) * 4), stroke=8)
-    if c.t > tp:
-        text_label(f, 540, 1200, "VARIAS CAPAS DE LACA", 44, PAINT, ease_out((c.t - tp - 0.4) / 0.3))
     return f
 
 
@@ -473,12 +490,13 @@ def sc_eraser(c):
     ts = c.wt("marca") - 0.2
     tf = c.wt("virola") - 0.2
     te = c.wt("goma") - 0.2
-    cam = orbit(c, 0.35, 0.04, 0.3, 240, (40, YC, 0))
+    cam = orbit(c, 0.55, 0.03, 0.42, 310, (25, YC, 0))
     objs = pencil(0, paint=1, stamp=smooth(ts, ts + 0.3, c.t), ferrule=clamp((c.t - tf) / 0.5),
                   eraser=clamp((c.t - te) / 0.5))
     f = stage(c, cam, objs)
     header(f, c, 8, "LA GOMA")
-    callout_at(f, c, cam, (94, YC + PR, 0), "VIROLA", 780, 470, "virola", dt=0.4, color=BRASS)
+    callout_at(f, c, cam, (40, YC + PR, 0), "MARCA Y DUREZA", 300, 470, "marca", dt=0.2, color=(120, 200, 140))
+    callout_at(f, c, cam, (94, YC + PR, 0), "VIROLA", 800, 470, "virola", dt=0.4, color=BRASS)
     callout_at(f, c, cam, (104, YC + PR, 0), "GOMA", 800, 1220, "goma", dt=0.4, color=ERASER)
     return f
 
@@ -489,20 +507,20 @@ SHAV = [(float(a), float(b), float(s)) for a, b, s in np.random.default_rng(9).u
 def sc_sharpen(c):
     ts = c.wt("punta") - 0.3
     sh = clamp((c.t - ts) / 0.9)
-    cam = orbit(c, -0.9, 0.04, 0.35, 320, (-40, YC, 0))
+    cam = orbit(c, -0.75, 0.04, 0.42, 290, (-45, YC, 0))
     objs = pencil(0, paint=1, ferrule=1, eraser=1, stamp=1, sharp=sh)
     f = stage(c, cam, objs)
     header(f, c, 9, "LA PUNTA")
-    if 0 < sh < 1 or (c.t > ts and c.t < ts + 1.8):
+    if c.t > ts and c.t < ts + 1.8:
         u = c.t - ts
         x, y, _ = cam.project(np.array([-88 - 18 * sh, YC, 0], np.float32))
         img, d = f.layer()
-        for a, b, s in SHAV:
-            r = 30 + u * 260 * s
+        for a, b, s_ in SHAV:
+            r = 30 + u * 260 * s_
             px = x + math.cos(a) * r
             py = y + math.sin(a) * r * 0.6 + 400 * u * u
             al = int(255 * clamp(1 - u / 1.8))
-            d.ellipse([px - 10 * s, py - 5 * s, px + 10 * s, py + 5 * s], fill=CEDAR + (al,))
+            d.ellipse([px - 10 * s_, py - 5 * s_, px + 10 * s_, py + 5 * s_], fill=CEDAR + (al,))
         f.comp(img)
     return f
 
@@ -510,26 +528,26 @@ def sc_sharpen(c):
 def sc_fact(c):
     tk = c.wt("cincuenta") - 0.3
     u = clamp(c.t / c.T)
-    cam = S3.Camera(0.0, 1.15, 330, (0, 0, 0))
-    dx = -60 + 200 * u
+    cam = S3.Camera(0.6, 1.05, 380, (-40, 0, 0))
+    dx = 60 - 120 * ease_io(u)
     objs = pencil(0, paint=1, ferrule=1, eraser=1, stamp=1, sharp=1, y=YC + 1)
     for o in objs:
         if hasattr(o, "c"):
             o.c = o.c + np.array([dx, 0, 0], np.float32)
         elif hasattr(o, "pos"):
             o.pos = o.pos + np.array([dx, 0, 0], np.float32)
-    f = stage(c, cam, [])
-    # línea de grafito en el suelo (detrás de la punta)
+    f = stage(c, cam, [], grid_alpha=40)
+    # línea de grafito que va dejando la punta
     tip = -94 + dx
-    pts = []
-    for k in range(80):
-        xx = -400 + (tip + 400) * k / 79
-        zz = 10 * math.sin(xx / 15) + 6 * math.sin(xx / 7)
-        pts.append(cam.project(np.array([xx, 0, zz], np.float32)))
+    xs = np.linspace(tip, 140, 160)
+    P = np.stack([xs, np.zeros_like(xs), 9 * np.sin(xs / 11) + 5 * np.sin(xs / 5.3)], 1).astype(np.float32)
+    px, py, _ = cam.project(P)
     img, d = f.layer()
-    d.line([(p[0], p[1]) for p in pts], fill=(60, 62, 70, 255), width=8, joint="curve")
+    d.line(list(zip(px.tolist(), py.tolist())), fill=(70, 72, 82, 255), width=7, joint="curve")
     f.comp(img)
-    img2, _ = S3.render(objs, cam, W, H, shadows=False)
+    img2, sh = S3.render(objs, cam, W, H)
+    if sh is not None:
+        f.a *= (1 - 0.5 * sh)[..., None]
     f.comp(img2)
     if c.t > tk:
         km = int(56 * ease_out((c.t - tk) / 1.6))
@@ -540,12 +558,12 @@ def sc_fact(c):
 
 
 def sc_outro(c):
-    f, cam = hero(c, yaw0=-2.5)
+    f, cam = hero(c, yaw0=-0.75)
     tb = c.wt("lápiz") - 0.3
     if c.t > tb:
         pop = ease_out_back((c.t - tb) / 0.4)
-        text_label(f, 540, 170, "CÓMO SE HACE", 46, ACCENT, clamp(pop * 2))
-        text_big(f, 540, 300, "EL LÁPIZ", int(190 * (0.6 + 0.4 * pop)), WHITE, clamp(pop * 2))
+        text_label(f, 540, 140, "CÓMO SE HACE", 46, ACCENT, clamp(pop * 2))
+        text_big(f, 540, 320, "EL LÁPIZ", int(190 * (0.6 + 0.4 * pop)), WHITE, clamp(pop * 2))
     f.fill((0, 0, 0), smooth(c.T - 1.2, c.T, c.t))
     return f
 
