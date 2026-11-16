@@ -1,6 +1,12 @@
 {
-  "ciclo": 0,
-  "siguiente_dia": 1,
-  "historias": [],
-  "historial_titulos": ["NO ABRAS"]
+  "ciclo": 1,
+  "siguiente_dia": 2,
+  "historias": [
+    {"carpeta": "series/c01-ultima-parada", "titulo": "ÚLTIMA PARADA", "partes_publicadas": [1]},
+    {"carpeta": "series/c01-piso-13", "titulo": "PISO 13", "partes_publicadas": [1]},
+    {"carpeta": "series/c01-el-del-farol", "titulo": "EL DEL FAROL", "partes_publicadas": [1]}
+  ],
+  "historial_titulos": ["NO ABRAS", "ÚLTIMA PARADA", "PISO 13", "EL DEL FAROL"],
+  "pendientes": [],
+  "notas": "Código común en series/lib (core.js, audio_core.py, render.py, index.html). Cómo producir: series/README.md y series/run.sh. Día 1 programado el 2026-11-16: 12:00 ÚLTIMA PARADA, 17:00 PISO 13 (las 16:00 ya estaban ocupadas por NO ABRAS Parte 1), 19:00 EL DEL FAROL."
 }
