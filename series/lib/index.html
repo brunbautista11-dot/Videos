@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:IB;src:local("Inter Display Black"),local("InterDisplay-Black"),local("Inter Black");font-weight:900}
+@font-face{font-family:IBI;src:local("Inter Display Black Italic"),local("InterDisplay-BlackItalic"),local("Inter Black Italic");font-weight:900}
+html,body{margin:0;background:#000;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000;font-family:"Inter Display","Inter",sans-serif;font-weight:900}
+#c{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.fx{position:absolute;inset:0;pointer-events:none}
+#vig{background:radial-gradient(ellipse 75% 62% at 50% 46%,rgba(0,0,0,0) 52%,rgba(0,0,0,.42) 82%,rgba(0,0,0,.82) 100%)}
+#grain{opacity:.11;mix-blend-mode:overlay;background-size:512px 512px}
+#tint{mix-blend-mode:soft-light}
+#black{background:#000;opacity:0}#white{background:#fff;opacity:0}
+#red{background:radial-gradient(ellipse at 50% 100%,rgba(255,20,30,.5),rgba(255,0,0,0) 65%);opacity:0}
+#tag{position:absolute;top:118px;left:0;width:100%;text-align:center;font-size:30px;letter-spacing:6px;color:#f6d77a;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.9);opacity:.92}
+#tag b{color:#fff;font-weight:900;margin-left:14px;background:rgba(190,20,30,.92);padding:4px 14px 5px;border-radius:8px;letter-spacing:3px}
+#alert{position:absolute;left:60px;top:236px;width:960px;box-sizing:border-box;border-radius:34px;padding:26px 34px 30px 150px;
+ background:linear-gradient(180deg,#e3202c,#a30d18);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 0 3px rgba(255,255,255,.18) inset;color:#fff;transform-origin:50% 0}
+#alert .ic{position:absolute;left:34px;top:30px;width:90px;height:90px}
+#alert .k{font-size:27px;letter-spacing:5px;opacity:.9}
+#alert .m{font-size:58px;line-height:1.02;margin-top:6px;letter-spacing:-.5px}
+#alert .s{font-size:31px;font-weight:700;opacity:.92;margin-top:10px;font-family:"Inter",sans-serif}
+#sub{position:absolute;left:70px;width:940px;top:1168px;text-align:center;font-size:76px;line-height:1.12;text-transform:uppercase;color:#fff;letter-spacing:0;transform-origin:50% 50%}
+#sub span{display:inline-block;margin:0 21px;-webkit-text-stroke:14px #000;paint-order:stroke fill;text-shadow:0 8px 0 rgba(0,0,0,.9),0 0 30px rgba(0,0,0,.8);transform-origin:50% 80%}
+#sub.it{font-family:IBI,"Inter Display","Inter";font-style:italic}
+#who{position:absolute;left:0;width:100%;top:1106px;text-align:center;font-size:30px;letter-spacing:5px;text-transform:uppercase;text-shadow:0 2px 0 #000,0 0 12px #000}
+#title{position:absolute;left:0;width:100%;top:520px;text-align:center;transform-origin:50% 50%}
+.gold{position:relative;display:inline-block;font-size:218px;letter-spacing:-5px;line-height:.9;font-style:italic;font-family:IBI,"Inter Display","Inter"}
+.gold .b{color:#5a3604;text-shadow:1px 2px 0 #7a4c08,2px 4px 0 #74470a,3px 6px 0 #6c4108,4px 8px 0 #643b06,5px 10px 0 #5a3604,6px 12px 0 #4d2d03,7px 14px 0 #432702,8px 16px 0 #3a2102,10px 22px 26px rgba(0,0,0,.85),0 0 60px rgba(255,190,60,.35)}
+.gold .f{position:absolute;left:0;top:0;background:linear-gradient(176deg,#fff7c9 8%,#ffd95a 30%,#f2a81d 52%,#fff0a0 60%,#d98a0c 82%,#8a5206 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px rgba(255,246,190,.55)}
+#title .p{margin-top:34px;font-size:64px;letter-spacing:14px;color:#fff;text-shadow:0 4px 0 #000,0 0 24px #000}
+#title .p i{font-style:normal;background:#c8141f;padding:6px 26px 8px 34px;border-radius:14px}
+#end{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(10,6,8,.72),rgba(0,0,0,.94));opacity:0}
+#end .q{position:absolute;top:400px;width:100%;text-align:center}
+#end .gold{font-size:150px;letter-spacing:-3px;line-height:.96}
+.opt{position:absolute;left:110px;width:860px;height:170px;border-radius:30px;box-sizing:border-box;color:#fff;font-size:62px;line-height:170px;padding-left:190px;box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 4px rgba(255,255,255,.14) inset;letter-spacing:-.5px}
+.opt em{position:absolute;left:26px;top:25px;width:120px;height:120px;border-radius:24px;background:rgba(0,0,0,.35);font-style:normal;text-align:center;line-height:120px;font-size:84px}
+#oa{top:860px;background:linear-gradient(180deg,#e3202c,#99101a)}#ob{top:1070px;background:linear-gradient(180deg,#3c5d8a,#22364f)}
+#cta{position:absolute;top:1300px;width:100%;text-align:center;font-size:56px;color:#ffd95a;text-shadow:0 4px 0 #000}
+#nxt{position:absolute;top:1420px;width:100%;text-align:center;font-size:44px;color:#fff;letter-spacing:2px;text-shadow:0 3px 0 #000}
+#nxt i{font-style:normal;background:#c8141f;padding:8px 26px 10px;border-radius:14px}
+</style></head><body>
+<div id="stage">
+ <canvas id="c" width="720" height="1280"></canvas>
+ <div id="tint" class="fx"></div><div id="red" class="fx"></div><div id="vig" class="fx"></div><div id="grain" class="fx"></div>
+ <div id="white" class="fx"></div><div id="black" class="fx"></div>
+ <div id="tag"></div>
+ <div id="alert"><svg class="ic" viewBox="0 0 100 100"><path d="M50 8 L96 90 L4 90 Z" fill="#fff"/><rect x="45" y="36" width="10" height="30" rx="4" fill="#c8141f"/><circle cx="50" cy="77" r="6" fill="#c8141f"/></svg><div class="k"></div><div class="m"></div><div class="s"></div></div>
+ <div id="who"></div><div id="sub"></div>
+ <div id="title"><div class="gold"><span class="b"></span><span class="f"></span></div><div class="p"><i></i></div></div>
+ <div id="end"><div class="q"><div class="gold"><span class="b"></span><span class="f"></span></div></div>
+  <div class="opt" id="oa"><em>A</em><span></span></div><div class="opt" id="ob"><em>B</em><span></span></div>
+  <div id="cta"></div><div id="nxt"></div></div>
+</div>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js"}}</script>
+<script type="module" src="./scene.js"></script>
+</body></html>
