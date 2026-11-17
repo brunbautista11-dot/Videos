@@ -94,7 +94,7 @@ function P2(t) {
   const c = evalPath(K2, t), u = cl(t - M.die, 0, 2), s = t < M.die ? v * t : v * M.die + v * (u - u * u / 4), sStop = v * M.die + v, dead = t > M.die, deadK = sr(t, M.die, M.die + 1.4);
   const d0 = 13 - t * 11, atW = t > M.knock - .2, gl = t > M.glow ? 1 : 0, hit = t > M.sting && t < M.sting + 1;
   env({ s, sign: sStop + 4.2 - s < 160 ? sStop + 4.2 - s : undefined, signX: 3.6, head: dead ? (1 - deadK) * flk(t, 19, .4, .1) : 1, dash: dead ? (1 - deadK) * flk(t, 15, .4, .2) : 1, radio: t > M.radio + .2 && !dead, radioI: flk(t, 17, .2, .5),
-    mir: gl * (1.0 + .3 * Math.sin(t * 11)) * (atW ? 0 : 1), mirS: .11, mirWarm: gl && !atW, backL: gl * (atW ? 0 : 1) * lanF(t) * 1.6, lan: t < M.thru + .2 || atW ? lanF(t) : 0 });
+    exp: 1.6, mir: gl * (1.0 + .3 * Math.sin(t * 11)) * (atW ? 0 : 1), mirS: .11, mirWarm: gl && !atW, backL: gl * (atW ? 0 : 1) * lanF(t) * 2.6, lan: t < M.thru + .2 || atW ? lanF(t) : 0 });
   if (t < M.thru + .2) pose(hombre, { t, x: 0, z: -Math.max(.9, d0), ry: 0, aL: [-1.25, .1], glow: .9, eye: 1.2, pupil: .5, noblink: 1 });
   else if (atW) atWindow(t, { talk: talk('m1', t), glow: sr(t, M.sting - .1, M.sting + .3) * .8, smile: sr(t, Ln.m1.end - .5, M.sting + .2) * .6, eye: 1.1, pupil: .6 });
   arms(t, { wheel: wheelW(c) });
