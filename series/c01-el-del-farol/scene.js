@@ -113,10 +113,10 @@ function P3(t) {
   const c = evalPath(K3, t), seated = t >= M.dooropen + .25 && t < Ln.h2.end - 3.2, rev = t >= M.reveal;
   const s = t < tA ? 0 : t < tA + 2 ? 6.5 * (t - tA) ** 2 : t < tD ? 26 + v * (t - tA - 2) : (26 + v * (tD - tA - 2)) + v * cl(t - tD, 0, 3) - v * cl(t - tD, 0, 3) ** 2 / 6, sSt = 26 + v * (tD - tA - 2) + 39;
   const dawn = sr(t, Ln.h2.start + 1.6, Ln.h2.end - 2.2), on = sr(t, M.start, M.start + .5);
-  env({ s, dawn, st: sSt - s < 170 && dawn > .5 ? sSt - s : undefined, head: on * (t < M.start + .5 ? flk(t, 18, .4, .2) : 1), dash: on, radio: 0, lan: t < M.dooropen || seated || rev ? lanF(t) * (rev ? 1.3 : 1) : 0 });
+  env({ s, dawn, st: sSt - s < 170 && dawn > .5 ? sSt - s : undefined, head: on * (t < M.start + .5 ? flk(t, 18, .4, .2) : 1), dash: on, radio: 0, exp: lerp(1.75, 1.15, dawn), cab: seated ? .35 : 0, lan: t < M.dooropen || seated || rev ? lanF(t) * (rev ? 1.3 : 1) : 0 });
   if (t < M.dooropen) atWindow(t, { glow: .8, smile: .6, eye: 1.1, pupil: .6 });
   else if (seated || rev) { const tn = Math.max(win(t, Ln.m2.start - .3, Ln.m2.end + .5, .5, .5), rev ? 1 : 0), pt = win(t, Ln.m3.start, Ln.m3.end + .3, .3, .4);
-    pose(hombre, { t, x: .46, z: .36, y: -.2, sit: 1, ry: PI, hyAbs: tn * 1.2, talk: talk('m1', t) + talk('m2', t) + talk('m3', t), smile: Math.max(win(t, Ln.m2.start, Ln.m2.end + .6, .4, .5) * .5, rev ? .9 : 0), glow: rev ? .8 : .2, eye: rev ? 1.12 : 1, pupil: rev ? .5 : .8, noblink: 1, aL: [-.75, -.25], aR: [-pt * 1.5, 0] }) }
+    pose(hombre, { t, x: .46, z: .36, y: -.2, sit: 1, ry: PI, hyAbs: tn * 1.2, talk: talk('m1', t) + talk('m2', t) + talk('m3', t), smile: Math.max(win(t, Ln.m2.start, Ln.m2.end + .6, .4, .5) * .5, rev ? .9 : 0), glow: rev ? .8 : .45, eye: rev ? 1.12 : 1, pupil: rev ? .5 : .8, noblink: 1, aL: [-.75, -.25], aR: [-pt * 1.5, 0] }) }
   if (t > M.station - 1) pose(playero, { t, x: -1.5, z: .15 - (sSt - s), ry: PI / 2, look: t > Ln.p2.start - .3 ? V(.36, 1.2, .3) : cam.position, talk: talk('p1', t) + talk('p2', t), brow: sr(t, Ln.p2.start - .4, Ln.p2.start), aR: [-sr(t, Ln.p2.start + .5, Ln.p2.start + 1.0) * 1.3, 0], smile: win(t, M.station + .8, Ln.p1.start + .8, .4, .5) * .4 });
   arms(t, { wheel: wheelW(c) }); const hit = rev && t < M.reveal + 1;
   setCam(c, t, cl(c.fov / 55, .2, 1) * (s > 0 && t < tD + 3 ? 1.5 : .7) + (hit ? 1.3 : 0), 0, (hit && t - M.reveal < .3 ? 1 : 0) + (t > M.dooropen && t < M.sit + .2 ? .2 : 0));
