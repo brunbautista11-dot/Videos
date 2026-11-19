@@ -161,8 +161,8 @@ def part2():
     tl.marks['rate'] = a; S(sfx_tap(1, .3, .5), a + 1.4, .4)
     a, b = L('e5', 'N', "Pero en mil novecientos sesenta y seis, hace justo sesenta años, cayeron de cuarenta a cincuenta por segundo, durante unos quince minutos.", gap=0.4,
              show="Pero en 1966, hace justo 60 años, cayeron de 40 a 50 por segundo, durante unos 15 minutos.")
-    tl.marks['storm'] = a; S(sfx_riser(2.0), a + 1.0, .35); S(boom(), a + 4.2, .5)
-    for k in range(10): S(streak(), a + 4.3 + k * .32, .25)
+    tl.marks['storm'] = a; S(sfx_riser(2.0), a + 1.0, .35); S(boom(), a + 4.5, .5)
+    for k in range(10): S(streak(), a + 4.6 + k * .3, .25)
     a, b = L('e6', 'N', "Y hay científicos que calculan que en dos mil treinta y tres podría haber otro gran espectáculo.", gap=0.4,
              show="Y hay científicos que calculan que en 2033 podría haber otro gran espectáculo.")
     tl.marks['future'] = a; S(chime(), b - 1.0, .4)

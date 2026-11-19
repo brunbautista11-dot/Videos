@@ -5,7 +5,7 @@ const P = PART;
 const CFG = {
   1: { title: '¿APAGÓN<br>MUNDIAL?', ts: 150, tag: 'VIRAL<b>¿VERDAD O MENTIRA?</b>', sub: '17 DE NOVIEMBRE', spk: { n: ['#ffd95a', '', 0], q: ['#7fd8ff', '', 0] } },
   2: { title: 'LLUVIA DE<br>ESTRELLAS', ts: 150, tag: 'CIELO<b>ESTA SEMANA</b>', sub: 'LEÓNIDAS 2026', spk: { n: ['#9fe8ff', '', 0], q: ['#ffd95a', '', 0] } },
-  3: { title: '¿MÁS RÁPIDO<br>QUE VOS?', ts: 140, tag: 'ANIMALES<b>CIENCIA</b>', sub: 'CUERVOS · ESTUDIO 2026', spk: { n: ['#ffd95a', '', 0], q: ['#ff9a6a', '', 0] } },
+  3: { title: '¿MÁS RÁPIDO<br>QUE VOS?', ts: 140, tag: 'ANIMALES<b>CIENCIA</b>', sub: 'ESTUDIO 2026', spk: { n: ['#ffd95a', '', 0], q: ['#ff9a6a', '', 0] } },
 }[P];
 init({ tag: '', title: CFG.title, titleSize: CFG.ts, spk: CFG.spk });
 document.getElementById('tag').innerHTML = CFG.tag;
@@ -173,7 +173,7 @@ if (P == 2) {
   COM.position.set(-30, 45, -80);
   const DUST = []; for (let i = 0; i < 80; i++) { const d = glowSprite(scene, 0xbfe6ff, .5, 0, 0, 0); d.material.opacity = 0; DUST.push(d) }
   makePanel(V(-2.5, 6.8, -10), .12, 4.2, 0x8fe0ff, 0x4aa0ff);
-  function spawnRate(t) { if (t < M.when) return 7; if (t < M.storm + 4.0) return 1.8; if (t < M.future) return lerp(1.5, 45, sr(t, M.storm + 4.0, M.storm + 4.8)) * (1 - sr(t, M.future - 1.2, M.future)) + 1.5; return 2.0 }
+  function spawnRate(t) { if (t < M.when) return 7; if (t < M.storm + 4.3) return 1.8; if (t < M.future) return lerp(1.5, 45, sr(t, M.storm + 4.3, M.storm + 4.9)) * (1 - sr(t, M.future - 1.2, M.future)) + 1.5; return 2.0 }
   function meteors(t) {
     // deterministic schedule: meteor i fires at times based on hash, dense in storm
     const dur = .7; MET.forEach(o => { o.m.visible = false; o.head.visible = false });
@@ -203,7 +203,7 @@ if (P == 2) {
       const k3 = sr(t, Ln.e3.end - 2.0, Ln.e3.end - 1.4); sg.globalAlpha = k3; pill('SE CALIENTA Y BRILLA', 360, 580, '#c0401a', '#fff', 48); sg.globalAlpha = 1 }
     else if (t < M.storm) { bgS(t, '#060a24', '#10204a', 'rgba(160,220,255,.07)'); txt('ESTE AÑO', 360, 90, 56, cy); txt('≈ ' + Math.round(15 * ss(ramp(t, M.rate + .5, M.rate + 1.8))), 360, 290, 220, '#fff', { glow: '#4ab0ff', blur: 44 }); txt('POR HORA', 360, 460, 64, cy); txt('CON CIELO BIEN OSCURO', 360, 600, 40, 'rgba(255,255,255,.75)') }
     else if (t < M.future) { bgS(t, '#1a0a30', '#300e50', 'rgba(220,160,255,.07)'); const k = sr(t, M.storm + .5, M.storm + 1.2); txt('TORMENTA DE', 360, 80, 48, '#e6b0ff'); txt('1966', 360, 210, 170 * (.8 + .2 * k), '#fff', { glow: '#c060ff', blur: 44 });
-      const k2 = sr(t, M.storm + 4.2, M.storm + 4.8); sg.globalAlpha = k2; txt('40 – 50', 360, 400, 110, '#ffd95a', { glow: '#ffb000' }); txt('POR SEGUNDO', 360, 490, 54, '#fff'); sg.globalAlpha = sr(t, Ln.e5.end - 2.2, Ln.e5.end - 1.6); pill('DURANTE ≈ 15 MINUTOS', 360, 610, '#6a2aa0', '#fff', 42); sg.globalAlpha = 1 }
+      const k2 = sr(t, M.storm + 3.1, M.storm + 3.5); sg.globalAlpha = k2; txt('40 – 50', 360, 400, 110, '#ffd95a', { glow: '#ffb000' }); txt('POR SEGUNDO', 360, 490, 54, '#fff'); sg.globalAlpha = sr(t, M.storm + 3.7, M.storm + 4.1); pill('DURANTE ≈ 15 MINUTOS', 360, 610, '#6a2aa0', '#fff', 42); sg.globalAlpha = 1 }
     else if (t < M.tip) { bgS(t, '#060a24', '#10204a', 'rgba(160,220,255,.07)'); txt('¿LA PRÓXIMA?', 360, 100, 60, cy); const k = sr(t, Ln.e6.start + 2.4, Ln.e6.start + 3.0); txt('2033', 360, 320, 210 * (.8 + .2 * k), '#fff', { glow: '#4ab0ff', blur: 44 }); stampMark('POSIBLE', 360, 540, ramp(t, Ln.e6.end - 1.2, Ln.e6.end - .6), '#ffd95a', -.1, 70) }
     else { bgS(t, '#06180e', '#0e2a1a', 'rgba(160,255,200,.07)'); txt('DESDE URUGUAY', 360, 80, 54, '#a8ffcc');
       sg.save(); sg.translate(360, 330); sg.strokeStyle = 'rgba(255,255,255,.6)'; sg.lineWidth = 5; sg.beginPath(); sg.arc(0, 0, 150, 0, 7); sg.stroke(); txt('N', 0, -120, 40, '#fff'); txt('S', 0, 122, 40, '#fff'); txt('O', -120, 2, 40, '#fff'); txt('E', 120, 2, 52, '#ffd95a');
@@ -214,8 +214,8 @@ if (P == 2) {
   const K = path([[0, [-2, 2.2, 14], [20, 22, -40], 70], [M.title - .2, [-1, 2.4, 12], [16, 20, -40], 68], [M.title + .9, [0, 3.2, 8], [-2.5, 6.5, -10], 60],
     pv(M.when - .3, 2.0, .6, 60), pv(M.when + .05, 1.75, 0, 60), pv(M.comet - .3, 1.68, 0, 60), [M.comet + .05, [-3, 3, 6], [-30, 42, -80], 64], [M.comet + 2.4, [-2, 3, 5], [-24, 40, -80], 62],
     pv(M.comet + 2.6, 1.85, -.3, 60), pv(M.speed - .3, 1.72, 0, 60), [M.speed + .05, [4, 2.6, 6], [40, 30, -40], 68], [M.speed + 2.2, [3, 2.4, 4], [40, 34, -40], 66],
-    pv(M.speed + 2.4, 1.85, 0, 60), pv(M.rate - .3, 1.72, 0, 60), pv(M.rate + .05, 1.85, .3, 60), pv(M.storm - .3, 1.72, 0, 60), pv(M.storm + .05, 1.85, 0, 60), pv(M.storm + 3.9, 1.75, 0, 60),
-    [M.storm + 4.2, [-4, 2.4, 10], [30, 30, -40], 72], [M.future - .4, [-2, 2.2, 8], [30, 34, -40], 70], pv(M.future - .1, 1.85, 0, 60), pv(M.tip - .3, 1.72, 0, 60),
+    pv(M.speed + 2.4, 1.85, 0, 60), pv(M.rate - .3, 1.72, 0, 60), pv(M.rate + .05, 1.85, .3, 60), pv(M.storm - .3, 1.72, 0, 60), pv(M.storm + .05, 1.85, 0, 60), pv(M.storm + 4.4, 1.75, 0, 60),
+    [M.storm + 4.8, [-4, 2.4, 10], [30, 30, -40], 72], [M.future - .4, [-2, 2.2, 8], [30, 34, -40], 70], pv(M.future - .1, 1.85, 0, 60), pv(M.tip - .3, 1.72, 0, 60),
     pv(M.tip + .05, 1.85, 0, 60), pv(Ln.e7.end - .2, 1.72, 0, 60), [M.endcard, [-1, 2.5, 12], [30, 26, -40], 70], [C.dur, [0, 2.2, 14], [36, 30, -40], 72]]);
   frame = function (t) {
     STARS.rotation.y = t * .004;
@@ -273,15 +273,15 @@ if (P == 3) {
       txt('CUERVO', 80, 380, 34, '#fff', { a: 'left' }); bar(80, 405, 560, 44, .5 * k2, '#ffd95a'); txt('HUMANOS Y MONOS', 80, 500, 34, '#fff', { a: 'left' }); bar(80, 525, 560, 44, 1 * k2, '#7ab0ff');
       stampMark('≈ LA MITAD', 360, 640, ramp(t, M.time + 4.2, M.time + 4.8), '#ff5a3a', -.08, 54) }
     else if (t < M.neur) { bgS(t, '#0a2a14', '#104a24', 'rgba(140,255,170,.07)'); txt('CON SEÑAL CLARA', 360, 90, 50, '#a8ffc0'); const k = ss(ramp(t, M.acc + 1.6, M.acc + 3.2));
-      txt('≈ ' + Math.round(100 * k) + '%', 360, 300, 190, '#fff', { glow: '#2aff6a', blur: 44 }); txt('DE ACIERTOS', 360, 460, 60, '#a8ffc0'); bar(110, 560, 500, 44, k, '#2aff6a') }
+      txt('≈ ' + Math.round(100 * k) + '%', 360, 300, 150, '#fff', { glow: '#2aff6a', blur: 44 }); txt('DE ACIERTOS', 360, 460, 60, '#a8ffc0'); bar(110, 560, 500, 44, k, '#2aff6a') }
     else if (t < M.myst) { bgS(t, '#1a0a2a', '#30104a', 'rgba(220,160,255,.07)'); txt('SUS NEURONAS', 360, 80, 52, '#e6b0ff'); txt('DISTINGUEN EN', 360, 140, 40, '#fff');
       const k = ss(ramp(t, M.neur + 1.6, M.neur + 2.6)); txt(fmt(70 * k) + ' ms', 360, 290, 150, '#fff', { glow: '#c060ff', blur: 40 });
       sg.strokeStyle = '#e6b0ff'; sg.lineWidth = 5; sg.beginPath(); for (let x = 60; x <= 660; x += 4) { const ph = (x - 60) / 600; const sp = Math.abs(((ph * 8 - t * 2) % 1 + 1) % 1 - .5) < .03 ? -90 : 0; const y = 520 + sp + Math.sin(x * .2 + t * 10) * 6; x == 60 ? sg.moveTo(x, y) : sg.lineTo(x, y) } sg.stroke() }
     else { bgS(t, '#2a1408', '#4a2410', 'rgba(255,200,120,.07)'); txt('¿CÓMO LO HACEN?', 360, 130, 64, '#fff'); txt('?', 360, 360, 240, gold, { glow: '#ffb000', blur: 50 });
-      stampMark('REVISTA SCIENCE · NOV 2026', 360, 600, ramp(t, Ln.f6.end - 2.6, Ln.f6.end - 2.0), '#ffd95a', -.06, 40) }
+      stampMark('REVISTA SCIENCE · NOV 2026', 360, 600, ramp(t, Ln.f6.end - 2.6, Ln.f6.end - 2.0), '#ffd95a', -.06, 34) }
     scanlines(.04); frameEdge('rgba(255,255,255,.5)');
   }
-  const K = path([[0, [3.0, 2.1, -.3], [0, 1.72, -.05], 36], [M.title - .2, [2.6, 2.0, -.1], [0, 1.74, -.05], 34], [M.title + .9, [2.6, 2.5, 2.2], [0, 2.2, -.8], 52],
+  const K = path([[0, [2.7, 2.35, -.3], [0, 1.75, -.05], 50], [M.title - .2, [2.3, 2.2, 0], [0, 1.75, -.05], 48], [M.title + .9, [2.6, 2.5, 2.2], [0, 2.2, -.8], 52],
     pv(M.lab - .3, 2.0, .3, 60), pv(M.lab + .05, 1.8, 0, 60), pv(M.task - .3, 1.72, 0, 60), [M.task + .05, [.3, 2.05, 1.5], [0, 2.7, -1.7], 54], [M.task + 3.0, [.15, 2.0, 1.15], [0, 2.75, -1.7], 52],
     pv(M.time - .3, 1.85, 0, 60), pv(M.time + .05, 1.8, -.2, 60), pv(M.acc - .3, 1.72, 0, 60), [M.acc + .05, [-1.6, 1.7, 1.4], [0, 1.7, -.2], 48], [M.acc + 1.4, [-1.2, 1.75, 1.1], [0, 1.75, -.2], 46],
     pv(M.acc + 1.6, 1.85, 0, 60), pv(M.neur - .3, 1.72, 0, 60), pv(M.neur + .05, 1.85, .2, 60), pv(M.myst - .3, 1.72, 0, 60), pv(M.myst + .05, 1.85, 0, 60), pv(Ln.f6.end - .4, 1.72, 0, 60),
