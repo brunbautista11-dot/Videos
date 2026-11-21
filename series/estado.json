@@ -11,7 +11,9 @@
     "LA CARPA",
     "LA LISTA"
   ],
-  "pendientes": [],
+  "pendientes": [
+    "2026-11-21: Metricool rechazó al publicar los 3 finales del ciclo 2 (c02-cama-9, c02-la-carpa, c02-la-lista parte-3.mp4) con 'You have reached your Metricool account limit'. No salieron en YouTube; los MP4 están en el repo."
+  ],
   "notas": "Código común en series/lib (core.js, audio_core.py, render.py, index.html). Cómo producir: series/README.md y series/run.sh. Ciclo 1 completo: día 3 (finales) programado el 2026-11-18: 12:00 ÚLTIMA PARADA, 17:00 PISO 13 (16:00 ocupado por NO ABRAS Parte 3), 19:00 EL DEL FAROL. En EL DEL FAROL P3 se subió la exposición (exp 1.75→1.15 al amanecer) y la luz del farol en la cara. Con 2 núcleos, cada render tarda ~10-12 min; lanzarlo con setsid nohup para que no lo corte el timeout del shell. Ciclo 2 día 1 programado el 2026-11-19 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (hora Montevideo). La rama claude/series también la usa la rutina de 'virales': hacer git fetch + rebase antes de pushear. Ciclo 2 día 2 programado el 2026-11-20 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (P2). core.js: la tarjeta final achica la fuente de opciones largas (>15 letras) para que no se desborden. Ciclo 2 día 3 (finales) programado el 2026-11-21 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA. LA CARPA P3: se encuadró a Nico de frente durante la espera (antes la cámara quedaba pegada a su nuca).",
   "ciclos_completados": [
     {
