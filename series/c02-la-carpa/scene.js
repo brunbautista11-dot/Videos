@@ -140,7 +140,7 @@ function P2(t) {
 // ================================================================== PARTE 3
 function P3(t) {
   const O = { tag: .92 }; hideAll(); const out = t >= M.open + .5, Do = [0, 1.45, -2.0];
-  K3 = K3 || path([[0, Ec, HND, 72], [Ln.h1.end, Ec, [0, .62, -1.3], 56], [Ln.g1.end + .3, Ec, DOOR, 50], [M.off + .4, Ec, DOOR, 56], [Ln.f1.start, Ec, DOOR, 46], [M.away + 2.5, Ec, [-1, .62, -.9], 56], [M.dawn + .5, Ec, [-.62, .68, -.3], 84], [M.open, Ec, DOOR, 60],
+  K3 = K3 || path([[0, Ec, HND, 72], [Ln.h1.end, Ec, [0, .62, -1.3], 56], [Ln.g1.end + .3, Ec, DOOR, 50], [M.off + .4, Ec, DOOR, 56], [Ln.f1.start, Ec, DOOR, 46], [M.away + 2.5, Ec, [-.45, .8, -.25], 60], [M.dawn + .5, Ec, [-.45, .74, -.25], 64], [M.open, Ec, DOOR, 60],
     [M.open + .5, [0, .9, -1.2], [0, .6, -3], 74], [Ln.h4.start + .2, [1.7, 1.75, -3.3], [0, .2, -.5], 72], [Ln.h4.start + 3.0, [1.4, 1.7, -3.1], [-.9, .05, -3.4], 70], [Ln.h4.end, [.5, 1.55, -2.4], [-1.2, .3, -6], 62], [Ln.h5.end, Do, [-1.3, .6, -6], 54], [Ln.n1.start, Do, [-1.3, 1.2, -6], 46], [M.sting + .3, Do, [-1.3, 1.45, -6.1], 26], [C.dur, Do, [-1.3, 1.45, -6.1], 24]]);
   const c = evalPath(K3, t), scare = t > M.sting && t < M.sting + 1, rOn = t < Ln.g1.end + .3, dawnK = sr(t, M.dawn, M.dawn + 2.0), lampOn = t < M.off;
   const sk = t < M.off ? .85 : t < M.away ? .6 * sr(t, M.off + .4, M.off + 1.2) : .6 * (1 - sr(t, M.away, M.away + 2.2)), sa = t < M.away ? 0 : lerp(0, -1.4, sr(t, M.away, M.away + 2.2));
@@ -148,7 +148,7 @@ function P3(t) {
     env({ t, lonaE: lampOn ? .85 : lerp(.28, .75, dawnK), lonaC: lampOn ? 0xd8e4ff : dawnK > .1 ? 0xcfdcff : 0x8fa8e0, inL: 0, inB: .3 + dawnK * .5, flash: lerp(2.2, .6, dawnK), led: rOn ? flk(t, 6, .3, .2) : .25, hemi: .25 + dawnK * .4,
       sil: sk > .01 ? { a: sa, k: sk, s: t > Ln.f1.start && t < M.away ? 1.2 : 1 } : null, spot: lampOn ? { a: .05, k: .5, y: .8, s: 1.8 } : null, slider: sr(t, M.open - .2, M.open + .4), exp: 1.25 });
     nBag.visible = true; const fear = 1 - dawnK * .6;
-    pose(nico, { t, x: -.45, z: -.25, y: -.3, sit: 1, ry: .9, look: t < M.dawn ? V(0, .7, -1.3) : cam.position, brow: .4 + fear * .6, eye: 1 + fear * .2, pupil: 1 - fear * .3, tremble: fear * .8, aL: [-.4, .25], aR: [-.4, .25] });
+    pose(nico, { t, x: -.45, z: -.25, y: -.3, sit: 1, ry: .9, look: t < M.away + .3 ? V(0, .7, -1.3) : cam.position, brow: .4 + fear * .6, eye: 1 + fear * .2, pupil: 1 - fear * .3, tremble: fear * .8, aL: [-.4, .25], aR: [-.4, .25] });
   } else {
     env({ t, inside: 0, dawn: 1, fire: 0, lonaE: 0, prints: 1, mist: .22, exp: 1.05, fogD: .028 });
     const nt = Ln.h5.start + .2, turn = sr(t, Ln.n1.start - .4, Ln.n1.start + .4);
