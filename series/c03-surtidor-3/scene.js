@@ -75,7 +75,7 @@ function env(o) {
 }
 function riders(t, o = {}) { // passengers in the back seat + driver (car-local coords)
   const L = o.look ?? null; [[-1.05, -.45], [-1.05, 0], [-1.05, .42]].forEach(([x, z], i) => { const turn = i == 2 ? (o.turn ?? 0) : 0;
-    pose(PASS[i], { t, x, z: -z, y: -.04, sit: 1, ry: PI / 2 + turn * 1.9, hy: 0, noblink: 1, eye: 1.05, pupil: .7, closed: o.closed ? 1 : 0, glow: o.glow ?? 0 }); PASS[i].g.visible = !!o.show });
+    pose(PASS[i], { t, x, z: -z, y: -.04 + turn * (o.rise ?? 0), sit: 1, ry: PI / 2 + turn * 1.9, hy: 0, noblink: 1, eye: 1.05, pupil: .7, closed: o.closed ? 1 : 0, glow: o.glow ?? 0 }); PASS[i].g.visible = !!o.show });
   pose(driver, { t, x: .1, z: -.38, y: -.2, sit: 1, ry: PI / 2, hyAbs: o.dlook ?? 0, aL: [-1.1, .1], aR: [-1.1, .1], glow: o.dglow ?? 0, noblink: 1 }); driver.g.visible = o.driver !== false }
 ARMP.ear = t => [[.17, -.08, -.22, .3, -.6, .2], [-.2, -.62, -.3, 0, 0, 0]];
 ARMP.nozzle = t => [[.16, -.34, -.5, -.2, 0, .2], [-.2, -.62, -.3, 0, 0, 0]];
@@ -125,14 +125,14 @@ function P2(t) {
 // ================================================================== PARTE 3
 function P3(t) {
   const O = { tag: .92 }; hideAll(); const morn = t >= M.morning && t < M.sting - .2, last = t >= M.sting - .2, scare = t > M.sting && t < M.sting + 1;
-  const TAGV = [2.7, 1.05, 6.15];
-  K3 = K3 || path([[0, [5.4, 1.7, 3.9], DWIN, 46], [Ln.c1.end, [5.4, 1.7, 3.9], DWIN, 40], [M.door + .5, [1.6, 1.75, 3.4], BWIN, 52], [Ln.h2.end, [1.9, 1.7, 3.8], [2.6, 1.2, 6.2], 46], [Ln.h3.start + 2.5, [2.2, 1.5, 4.3], TAGV, 40], [Ln.j1.end, [2.0, 1.65, 4.0], [2.6, 1.25, 6.2], 44],
+  const TAGV = [2.5, 1.0, 6.15];
+  K3 = K3 || path([[0, [5.4, 1.7, 3.9], DWIN, 46], [Ln.c1.end, [5.4, 1.7, 3.9], DWIN, 40], [M.door + .5, [1.6, 1.75, 3.4], BWIN, 52], [Ln.h2.end, [1.9, 1.7, 3.8], [2.6, 1.2, 6.2], 46], [Ln.h3.start + 2.5, [2.3, 1.45, 4.4], TAGV, 42], [Ln.h3.end, [2.3, 1.45, 4.4], TAGV, 40], [Ln.j1.end, [2.0, 1.65, 4.0], [2.6, 1.25, 6.2], 44],
     [M.dawn + .4, [4.6, 1.6, 5.0], [8, 1.2, 8], 56], [Ln.h4.end, [4.6, 1.6, 5.0], [30, 1.5, 12], 52], [M.morning, [1.5, 1.6, 2.0], [-.3, 1.6, 4.0], 54], [M.sting - .21, [1.6, 1.6, 2.2], [-.3, 1.65, 4.0], 48],
     [M.sting - .2, [3.8, 1.55, 6.0], PUMP3, 50], [M.sting + .4, [3.7, 1.5, 5.5], PUMP3, 32], [C.dur, [3.7, 1.5, 5.4], PUMP3, 40]]);
   const c = evalPath(K3, t), dk = sr(t, M.dawn, M.dawn + 3), go = sr(t, M.dawn + 2.2, Ln.h4.end);
   if (!morn && !last) {
     env({ t, dawn: dk, car: dk < 1 || go < .99 ? { x: 3.5 + go * go * 60, run: 1, win: .5, light: 1 - go, fog: .3, door: sr(t, M.door, M.door + 1.2) * (1 - sr(t, M.dawn + 1.5, M.dawn + 2.2)) * 1.1 } : null, disp: '900.00', dispOn: 1, can: 1 - dk * .5, exp: 1.15 });
-    riders(t, { show: 1, turn: sr(t, Ln.h2.end - 1.5, Ln.h2.end), dlook: 0 });
+    riders(t, { show: 1, turn: sr(t, Ln.h2.end - 1.5, Ln.h2.end), rise: .2 * sr(t, Ln.h2.end - 1, Ln.h3.start + 2), dlook: 0 });
   } else if (morn) {
     env({ t, day: 1, car: null, disp: '0.00', dispOn: 0, exp: 1.0 });
     pose(nestor, { t, x: -.3, z: 4.0, ry: .9, look: cam.position, talk: talk('n1', t), brow: .5, aR: [-.3, .1] });

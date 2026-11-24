@@ -77,7 +77,7 @@ const W4 = [-2.43, .52, -2.74], GL = [0, 1.5, .5], FAR = [2.2, 1.5, 8.6];
 let K1, K2, K3;
 // ================================================================== PARTE 1
 function P1(t) {
-  const O = { tag: sr(t, 3.6, 4.2) * .92 }; hideAll(); rimL.intensity = 0;
+  const O = { tag: sr(t, 3.6, 4.2) * .92 }; hideAll(); rimL.intensity = 0; rimL.position.set(-.3, 2.3, 2.4);
   const fb = t >= M.fb && t < M.back, close = t > M.flick + 1.1, scare = t > M.sting && t < M.sting + 1;
   K1 = K1 || path([[0, [1.2, 1.6, -3.2], FAR, 50], [M.fb - .01, [1.1, 1.6, -2.0], FAR, 34],
     [M.fb, [.2, 1.6, -2.6], [2.3, 1.4, -5.4], 60], [M.back - .01, [.3, 1.6, -2.8], [2.3, 1.45, -5.4], 52],
@@ -102,7 +102,7 @@ function P1(t) {
 ARMP.key = t => [[.12, -.2, -.48, .3, 0, -.6 + Math.sin(t * 10) * .1], [-.2, -.62, -.3, 0, 0, 0]];
 ARMP.ear = t => [[.17, -.08, -.22, .3, -.6, .2], [-.2, -.62, -.3, 0, 0, 0]];
 function P2(t) {
-  const O = { tag: .92 }; hideAll(); rimL.intensity = 4.5; const scare = t > M.sting && t < M.sting + 1, ph = t > M.ring + .6 && t < Ln.r2.end + .4;
+  const O = { tag: .92 }; hideAll(); rimL.intensity = 4.5; rimL.position.set(-.3, 2.3, 2.4); const scare = t > M.sting && t < M.sting + 1, ph = t > M.ring + .6 && t < Ln.r2.end + .4;
   K2 = K2 || path([[0, [.6, 1.6, -2.6], [.4, 1.1, .2], 62], [Ln.h1.end - 1.2, [.6, 1.55, -.9], [.75, 1.0, 0], 54], [Ln.m1.start, [.5, 1.6, -2.2], [-.2, 1.5, .7], 54], [Ln.m1.end, [.5, 1.6, -2.4], [-.2, 1.5, .7], 50],
     [Ln.h2.start + 1.2, [.7, 1.6, -3.4], [-.2, 1.3, .7], 58], [Ln.h2.end, [.7, 1.6, -3.6], [-.2, 1.4, .7], 54], [M.ring + .5, [.8, 1.6, -2.8], [-.3, 1.4, .7], 50],
     [Ln.r1.start + .4, [.9, 1.6, -3.2], [-1.0, .9, -4.8], 64], [Ln.r2.end, [.6, 1.6, -3.0], [-1.6, .8, -3.3], 60], [M.spin + .6, [.2, 1.45, -2.8], W4, 52], [Ln.h4.start + .5, [-1.2, 1.2, -2.74], W4, 50], [M.tap, [-1.45, 1.0, -2.74], W4, 40],
@@ -120,13 +120,14 @@ function P2(t) {
 }
 // ================================================================== PARTE 3
 function P3(t) {
-  const O = { tag: .92 }; hideAll(); rimL.intensity = 0; const night = t < M.dawn, scare = t > M.sting && t < M.sting + 1;
+  const O = { tag: .92 }; hideAll(); const night = t < M.dawn, scare = t > M.sting && t < M.sting + 1;
+  rimL.intensity = night ? 4.5 : t > M.sting - .3 ? 5 : 0; if (t > M.sting - .3) rimL.position.set(2.2, 2.4, 10.0); else rimL.position.set(-.3, 2.3, 2.4);
   const LOW = [1.3, .95, -5.0];
-  K3 = K3 || path([[0, LOW, [.2, 1.2, .5], 58], [Ln.m1.start, [1.25, .95, -4.6], [-.3, 1.5, .5], 46], [M.night + 2, [1.3, .9, -4.8], [-.3, 1.4, .5], 54], [M.dawn - .01, [1.3, .95, -4.8], [0, 1.4, .5], 56],
-    [M.dawn, [1.0, 1.6, -3.6], [0, 1.4, 4], 58], [M.rosa + .3, [1.0, 1.6, -3.4], [.2, 1.5, .5], 56], [Ln.r1.end, [.8, 1.6, -3.4], [-.6, 1.5, -1.6], 52], [M.open + 1, [.4, 1.6, -3.6], [-2.2, .8, -2.6], 56], [Ln.h4.start + 4, [.2, 1.55, -3.6], [-1.9, 1.0, -2.3], 50],
-    [Ln.r2.start + .5, [.2, 1.6, -3.0], [-1.0, 1.4, -3.2], 54], [M.box + .5, [1.4, 1.6, -4.1], [2.4, 1.0, -5.55], 54], [Ln.h5.end - 1, [1.9, 1.7, -4.6], [2.4, 1.0, -5.55], 44], [M.sting + .3, [1.3, 1.6, -3.4], FAR, 48], [Ln.h6.end, [1.2, 1.6, -2.4], FAR, 34], [C.dur, [1.2, 1.6, -2.4], FAR, 32]]);
+  K3 = K3 || path([[0, LOW, [.2, 1.0, .5], 58], [Ln.m1.start, [1.2, 1.2, -4.6], [-.3, 1.05, .5], 42], [M.night + 2, [1.3, 1.15, -4.8], [-.3, 1.0, .5], 48], [M.dawn - .01, [1.3, 1.15, -4.8], [0, 1.0, .5], 50],
+    [M.dawn, [1.0, 1.6, -3.6], [0, 1.4, 4], 58], [M.rosa + .3, [1.0, 1.6, -3.4], [.2, 1.5, .5], 56], [Ln.r1.end, [.8, 1.6, -3.4], [-.6, 1.5, -1.6], 52], [M.open + 1, [.6, 1.6, -3.9], [-2.0, 1.05, -2.5], 56], [Ln.h4.start + 4, [.4, 1.55, -3.8], [-1.8, 1.15, -2.2], 52],
+    [Ln.r2.start + .5, [.2, 1.6, -3.4], [-1.6, 1.35, -2.0], 54], [M.box + .5, [1.4, 1.6, -4.1], [2.4, 1.0, -5.55], 54], [Ln.h5.end - 1, [1.9, 1.7, -4.6], [2.4, 1.0, -5.55], 44], [M.sting + .3, [1.3, 1.6, -3.4], FAR, 48], [Ln.h6.end, [1.2, 1.6, -2.4], FAR, 34], [C.dur, [1.2, 1.6, -2.4], FAR, 32]]);
   const c = evalPath(K3, t), dk = sr(t, M.dawn, M.dawn + 1.5), rn = night ? 1 : t > M.sting - .2 ? sr(t, M.sting - .2, M.sting + 1.2) : 0;
-  env({ t, rain: rn, lights: night ? .0 : 1, dawn: dk * (1 - sr(t, M.sting - .3, M.sting + .6) * .6), exp: night ? 1.35 : 1.1, spin: 0, spin4: 0, umb4: t < M.open + 1.8, clothes4: 0, hemi: night ? .4 : undefined,
+  env({ t, rain: rn, lights: night ? .1 : 1, dawn: dk * (1 - sr(t, M.sting - .3, M.sting + .6) * .6), exp: night ? 1.35 : 1.1, spin: 0, spin4: 0, umb4: t < M.open + 1.8, clothes4: 0, hemi: night ? .4 : undefined,
     door: t > M.rosa && t < M.rosa + 2.2 ? win(t, M.rosa, M.rosa + 2.2, .5, .6) * .9 : 0, bell: win(t, M.rosa, M.rosa + 1.2, .05, .6) });
   if (night) pose(man, { t, x: -.3, z: .6, ry: PI, aR: [-1.35, .05], aL: (t % 1.8) < .9 && t > M.night ? [-1.9, -.2] : [0, 0] });
   if (t > M.sting) pose(man, { t, x: 2.2, z: 8.6, ry: PI, aR: [-1.35, .05] });
