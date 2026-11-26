@@ -312,7 +312,7 @@ if (P == 3) {
         sg.fillStyle = i < n ? (sp_ ? '#e0a040' : '#9a6a3a') : 'rgba(255,255,255,.12)'; sg.beginPath(); sg.roundRect(x - 34, y - 50, 68, 100, 14); sg.fill(); if (sp_) { sg.strokeStyle = gold; sg.lineWidth = 6; sg.strokeRect(x - 42, y - 58, 84, 116) } }
       sg.globalAlpha = sr(t, M.wax + 2.8, M.wax + 3.4); txt('BREA + CERA DE ABEJA', 360, 520, 40, gold); sg.globalAlpha = 1; stampMark('ZOPISSA', 360, 630, ramp(t, Ln.r3.end - 1.4, Ln.r3.end - .8), '#ff7a3a', -.05, 64) }
     else if (t < M.batches) { bgS(t, '#0e1a0a', '#1a2e12', 'rgba(200,255,160,.07)'); txt('POLEN ATRAPADO', 360, 70, 60, '#d8ffb0'); const names = [['PINO', '#e0d060', 0], ['ENCINA', '#c8a050', 1], ['OLIVO', '#a8c070', 1], ['AVELLANO', '#e0b060', 1], ['ABETO', '#d0e090', 0], ['HAYA', '#c8b080', 1]];
-      names.forEach(([s, c, kd], i) => { const t0 = M.pollen + 2.6 + i * (i < 4 ? .55 : .7) + (i >= 4 ? 1.2 : 0); const k = sr(t, t0, t0 + .4); if (k <= 0) return; sg.globalAlpha = k; const x = 140 + (i % 3) * 220, y = 220 + Math.floor(i / 3) * 230; pollen2D(x, y, 52, c, t, kd); txt(s, x, y + 90, 34, '#fff'); sg.globalAlpha = 1 });
+      names.forEach(([s, c, kd], i) => { const t0 = M.pollen + (i < 4 ? 1.0 + i * .9 : 4.6 + (i - 4) * .6); const k = sr(t, t0, t0 + .4); if (k <= 0) return; sg.globalAlpha = k; const x = 140 + (i % 3) * 220, y = 220 + Math.floor(i / 3) * 230; pollen2D(x, y, 52, c, t, kd); txt(s, x, y + 90, 34, '#fff'); sg.globalAlpha = 1 });
       sg.globalAlpha = sr(t, Ln.r4.end - 1.8, Ln.r4.end - 1.2); pill('DE MONTAÑA', 360, 660, '#2a4a1a', '#fff', 36); sg.globalAlpha = 1 }
     else if (t < M.map) { bgS(t, '#14100a', '#261c10', 'rgba(255,216,160,.07)'); const k = ss(ramp(t, M.batches + 1.0, M.batches + 2.6)); txt(k > .5 ? '4 O 5 TANDAS' : 'TANDAS DE BREA', 360, 70, 60, sa); ship2D(360, 330, 1.25, t, { segs: k, tilt: 0 });
       sg.globalAlpha = sr(t, M.batches + 3.8, M.batches + 4.4); txt('PROA: 3', 520, 470, 46, gold); arrow(520, 430, 560, 380, gold, 1); sg.globalAlpha = 1; stampMark('REPARACIONES', 360, 620, ramp(t, Ln.r5.end - 1.8, Ln.r5.end - 1.2), '#ff7a3a', -.05, 50) }
@@ -323,7 +323,7 @@ if (P == 3) {
     scanlines(.04); frameEdge('rgba(255,216,160,.6)');
   }
   const tc = [0, 1.6, -8];
-  const K = autoK([[0, [18, 5, 6], tc, 50], [M.title - .3, [-16, 6, 6], tc, 52], [M.title + .9, [0, 4.6, 7.8], [0, 5.2, -2], 60]],
+  const K = autoK([[0, [16, 3, -4], tc, 50], [M.title - .3, [-14, 3.5, -4], tc, 52], [M.title + .9, [0, 4.6, 7.8], [0, 5.2, -2], 60]],
     [M.ship, M.tar, M.wax, M.pollen, M.batches, M.map, M.pub],
     [[[[22, 9, 10], tc, 54], [[-20, 10, 10], tc, 54], 2.4], [near(tc, [8, 1, 9], 50), near(tc, [-8, 1.5, 9], 50), 2.4], null, null, [near(tc, [12, 6, 10], 52), near(tc, [14, 5, 6], 52), 2.6], [[[0, 18, 16], tc, 56], [[-8, 16, 14], tc, 56], 2.4], null],
     [[M.endcard, [16, 5, 4], tc, 52], [C.dur, [-16, 6, 4], tc, 54]]);

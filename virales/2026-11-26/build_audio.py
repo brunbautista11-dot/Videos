@@ -227,7 +227,7 @@ def part3():
     a, b = L('r4', 'N', "Pero la clave estaba en el polen atrapado en la brea: de pinos, encinas, olivos, avellanos... y hasta de abetos y hayas de montaña.", gap=0.35)
     tl.marks['pollen'] = a; S(chime(), a + 1.6, .35)
     a, b = L('r5', 'N', "Así descubrieron que el barco tuvo cuatro o cinco tandas distintas de brea. Solo la proa tenía tres. Lo iban reparando en el camino.", gap=0.35,
-             show="Así descubrieron que el barco tuvo 4 o 5 tandas distintas de brea. Solo la proa tenía 3. Lo iban reparando en el camino.")
+             show="Así descubrieron que el barco tuvo 4 o 5 tandas distintas de brea. Solo la proa tenía tres. Lo iban reparando en el camino.")
     tl.marks['batches'] = a; S(stamp(), a + 3.4, .45); S(stamp(), b - .6, .45)
     a, b = L('r6', 'N', "El polen sugiere que una parte se aplicó cerca de Brindisi, en Italia... y otra cerca de donde se hundió.", gap=0.35)
     tl.marks['map'] = a; S(whoosh_low(), a + 1.2, .5)
