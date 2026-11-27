@@ -113,7 +113,7 @@ function P3(t) {
   const O = { tag: .92 }; hideAll(); const dark = t > M.off && t < M.morning, morn = t >= M.morning && t < M.night, night = t >= M.night, scare = t > M.sting && t < M.sting + 1.1;
   const TAPEV = [-.35, .84, -2.15];
   K3 = K3 || path([[0, [.3, 1.3, .2], CONV, 46], [Ln.h1.end - 1.5, [.3, 1.3, .2], CONV, 42], [M.off, [0, 1.26, .3], WINV, 50], [Ln.h2.end, [0, 1.26, .1], WINV, 44], [Ln.h3.end, [0, 1.28, -.3], [0, 1.25, -2.95], 36], [M.signoff, [0, 1.28, -.5], [0, 1.25, -2.95], 30], [M.morning - .01, [0, 1.28, -.5], [0, 1.25, -2.95], 30],
-    [M.morning, [-.1, 1.5, -1.55], TAPEV, 46], [Ln.h4.end, [-.2, 1.3, -1.8], TAPEV, 36], [Ln.w1.start + .3, [.3, 1.55, -1.95], [-.8, 1.5, -3.8], 50], [M.night - .01, [.3, 1.55, -1.95], [-.8, 1.55, -3.8], 46],
+    [M.morning, [-.1, 1.5, -1.55], TAPEV, 46], [Ln.h4.end, [-.2, 1.3, -1.8], TAPEV, 36], [Ln.w1.start + .3, [.35, 1.6, -1.7], [-.8, 1.74, -3.8], 50], [M.night - .01, [.35, 1.6, -1.75], [-.8, 1.76, -3.8], 46],
     [M.night, SEAT, WINV, 52], [M.sting - .6, [-.4, 1.2, .1], PHV, 40], [M.sting + .1, [-.4, 1.2, .1], PHV, 34], [M.sting + .3, [0, 1.26, .2], WINV, 36], [C.dur, [0, 1.26, .1], WINV, 32]]);
   const c = evalPath(K3, t);
   if (!morn) {

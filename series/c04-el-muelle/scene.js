@@ -127,7 +127,7 @@ function P3(t) {
     pose(abu, { t, x: 80.0, z: -1.15, ry: 0, sit: 1, look: cam.position, talk: talk('a1', t), brow: .3, aR: [-.9, .1], aL: [-.2, .1] });
   } else {
     const fl = ramp(t, Ln.h6.start + 4, C.dur);
-    env({ t, fog: 1, fogD: .04, bottle: t > Ln.h6.start + 3 ? { p: [-.2 - fl * 1.5, .06 + Math.sin(t * 1.5) * .03, -36 - fl * 8], rx: 1.45, rz: Math.sin(t) * .2 } : null, boat: t > M.sting - .2 ? { x: -4, z: -50, light: sr(t, M.sting - .2, M.sting + .3), row: 0, face: 0 } : null, lamps: 1, flick: scare });
+    env({ t, fog: 1, fogD: .04, exp: 1.6, hemi: .9, bottle: t > Ln.h6.start + 3 ? { p: [-.2 - fl * 1.5, .06 + Math.sin(t * 1.5) * .03, -36 - fl * 8], rx: 1.45, rz: Math.sin(t) * .2 } : null, boat: t > M.sting - .2 ? { x: -4, z: -50, light: sr(t, M.sting - .2, M.sting + .3), row: 0, face: 0 } : null, lamps: 1, flick: scare });
   }
   arms(t, { run: running && t < M.dawn + 1 ? 1 : 0 });
   if (running) setCam(c, t, 1, t < M.dawn + 1 ? .8 : 0, 0); else setCam(c, t, cl(c.fov / 55, .25, 1) * (1 + (scare ? 1.3 : 0)), 0, scare && t - M.sting < .3 ? 1 : 0);
