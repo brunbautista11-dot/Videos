@@ -1,7 +1,29 @@
 {
   "ciclo": 5,
-  "siguiente_dia": 1,
-  "historias": [],
+  "siguiente_dia": 2,
+  "historias": [
+    {
+      "carpeta": "series/c05-probador-3",
+      "titulo": "PROBADOR 3",
+      "partes_publicadas": [
+        1
+      ]
+    },
+    {
+      "carpeta": "series/c05-el-pedido",
+      "titulo": "EL PEDIDO",
+      "partes_publicadas": [
+        1
+      ]
+    },
+    {
+      "carpeta": "series/c05-carril-4",
+      "titulo": "CARRIL 4",
+      "partes_publicadas": [
+        1
+      ]
+    }
+  ],
   "historial_titulos": [
     "NO ABRAS",
     "ÚLTIMA PARADA",
@@ -15,7 +37,10 @@
     "SURTIDOR 3",
     "CAJERO 24",
     "AL AIRE",
-    "EL MUELLE"
+    "EL MUELLE",
+    "PROBADOR 3",
+    "EL PEDIDO",
+    "CARRIL 4"
   ],
   "pendientes": [
     "2026-11-21: Metricool rechazó al publicar los 3 finales del ciclo 2 (c02-cama-9, c02-la-carpa, c02-la-lista parte-3.mp4) con 'You have reached your Metricool account limit'. No salieron en YouTube; los MP4 están en el repo.",
@@ -24,9 +49,10 @@
     "2026-11-24: los 6 posts de terror del 22 y 23/11 (ciclo 3 partes 1 y 2) siguen en ERROR 'You have reached your Metricool account limit'. Los 3 finales de hoy quedaron en PENDING a las 08:00/08:20/08:40; si fallan igual, los MP4 están en el repo.",
     "2026-11-25: ciclo 4 día 1 programado 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (PENDING). Los posts de terror del 24/11 siguen en ERROR 'You have reached your Metricool account limit'; los MP4 están en el repo.",
     "2026-11-26: ciclo 4 día 2 programado 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (P2, PENDING). Las 3 partes 1 del 25/11 figuran en ERROR 'You have reached your Metricool account limit' (igual que los virales del 25/11); los MP4 están en el repo.",
-    "2026-11-27: ciclo 4 día 3 (finales) programado 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (P3, PENDING). Los 3 posts de terror del 26/11 (P2) y los virales del 26/11 figuran en ERROR 'You have reached your Metricool account limit'; los MP4 están en el repo."
+    "2026-11-27: ciclo 4 día 3 (finales) programado 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (P3, PENDING). Los 3 posts de terror del 26/11 (P2) y los virales del 26/11 figuran en ERROR 'You have reached your Metricool account limit'; los MP4 están en el repo.",
+    "2026-11-28: ciclo 5 día 1 programado 08:00 PROBADOR 3, 08:20 EL PEDIDO, 08:40 CARRIL 4 (P1, PENDING). Los posts de terror del 27/11 (finales ciclo 4) y los virales del 27/11 figuran en ERROR 'You have reached your Metricool account limit'; los MP4 están en el repo."
   ],
-  "notas": "Código común en series/lib (core.js, audio_core.py, render.py, index.html). Cómo producir: series/README.md y series/run.sh. Ciclo 1 completo: día 3 (finales) programado el 2026-11-18: 12:00 ÚLTIMA PARADA, 17:00 PISO 13 (16:00 ocupado por NO ABRAS Parte 3), 19:00 EL DEL FAROL. En EL DEL FAROL P3 se subió la exposición (exp 1.75→1.15 al amanecer) y la luz del farol en la cara. Con 2 núcleos, cada render tarda ~10-12 min; lanzarlo con setsid nohup para que no lo corte el timeout del shell. Ciclo 2 día 1 programado el 2026-11-19 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (hora Montevideo). La rama claude/series también la usa la rutina de 'virales': hacer git fetch + rebase antes de pushear. Ciclo 2 día 2 programado el 2026-11-20 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (P2). core.js: la tarjeta final achica la fuente de opciones largas (>15 letras) para que no se desborden. Ciclo 2 día 3 (finales) programado el 2026-11-21 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA. LA CARPA P3: se encuadró a Nico de frente durante la espera (antes la cámara quedaba pegada a su nuca). Ciclo 3 día 1 programado el 2026-11-22 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3 (hora Montevideo). PASILLO 7 usa cámaras de seguridad como render a textura (cctv()/monitors() en su scene.js). SURTIDOR 3: el auto está en z=6.6 y la cabina es hueca (techo + parantes) para ver a los pasajeros. Render ~0.4 s/f (≈5 min por segmento). Ciclo 3 día 2 programado el 2026-11-23 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3 (P2). EL PARAGUAS P2: se agregó rimL (luz de contorno fría detrás del hombre, solo en P2) y exp 1.25, porque la silueta quedaba casi invisible. Ciclo 3 día 3 (finales) programado el 2026-11-24 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3. EL PARAGUAS P3: rimL también de noche (y detrás del hombre bajo el farol al final) y cámara reencuadrada sobre doña Rosa. SURTIDOR 3 P3: Julio se inclina (rise) hacia la ventana para que se vea la placa JULIO; ojo, los pasajeros están en fila en profundidad respecto de la cámara y se superponen. Ciclo 4 día 1 programado el 2026-11-25 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE. CAJERO 24: paredes laterales gris azulado (rojas tapaban la pantalla al girar); la pantalla del cajero es un canvas dinámico (drawScr); P3 tiene escena de día afuera con el cajero tapiado. AL AIRE: estudio + cabina B detrás del vidrio (z<-1.7), la silueta con auriculares se ilumina por el cartel AL AIRE. EL MUELLE: en P3 la corrida por el muelle es un loop de 18 m (z -30..-12) para que parezca infinito; la cocina del abuelo está en x=80. Las partes 2 y 3 de las tres ya tienen stills revisados sin errores. OJO: no usar 'pgrep -f render.py' dentro de un bash -c que contenga ese texto (se encuentra a sí mismo). Ciclo 4 día 2 programado el 2026-11-26 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (P2); render ~0.35-0.4 s/f, ~6 min por video. Ciclo 4 día 3 (finales) programado el 2026-11-27 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE. AL AIRE P3: se reencuadró a Walter (antes la cabeza quedaba cortada arriba). EL MUELLE P3: la escena de noche (botella al agua) subió a exp 1.6 / hemi .9 porque quedaba casi negra. Render ~6 min por video.",
+  "notas": "Código común en series/lib (core.js, audio_core.py, render.py, index.html). Cómo producir: series/README.md y series/run.sh. Ciclo 1 completo: día 3 (finales) programado el 2026-11-18: 12:00 ÚLTIMA PARADA, 17:00 PISO 13 (16:00 ocupado por NO ABRAS Parte 3), 19:00 EL DEL FAROL. En EL DEL FAROL P3 se subió la exposición (exp 1.75→1.15 al amanecer) y la luz del farol en la cara. Con 2 núcleos, cada render tarda ~10-12 min; lanzarlo con setsid nohup para que no lo corte el timeout del shell. Ciclo 2 día 1 programado el 2026-11-19 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (hora Montevideo). La rama claude/series también la usa la rutina de 'virales': hacer git fetch + rebase antes de pushear. Ciclo 2 día 2 programado el 2026-11-20 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA (P2). core.js: la tarjeta final achica la fuente de opciones largas (>15 letras) para que no se desborden. Ciclo 2 día 3 (finales) programado el 2026-11-21 a las 08:00 CAMA 9, 08:20 LA CARPA, 08:40 LA LISTA. LA CARPA P3: se encuadró a Nico de frente durante la espera (antes la cámara quedaba pegada a su nuca). Ciclo 3 día 1 programado el 2026-11-22 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3 (hora Montevideo). PASILLO 7 usa cámaras de seguridad como render a textura (cctv()/monitors() en su scene.js). SURTIDOR 3: el auto está en z=6.6 y la cabina es hueca (techo + parantes) para ver a los pasajeros. Render ~0.4 s/f (≈5 min por segmento). Ciclo 3 día 2 programado el 2026-11-23 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3 (P2). EL PARAGUAS P2: se agregó rimL (luz de contorno fría detrás del hombre, solo en P2) y exp 1.25, porque la silueta quedaba casi invisible. Ciclo 3 día 3 (finales) programado el 2026-11-24 a las 08:00 PASILLO 7, 08:20 EL PARAGUAS, 08:40 SURTIDOR 3. EL PARAGUAS P3: rimL también de noche (y detrás del hombre bajo el farol al final) y cámara reencuadrada sobre doña Rosa. SURTIDOR 3 P3: Julio se inclina (rise) hacia la ventana para que se vea la placa JULIO; ojo, los pasajeros están en fila en profundidad respecto de la cámara y se superponen. Ciclo 4 día 1 programado el 2026-11-25 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE. CAJERO 24: paredes laterales gris azulado (rojas tapaban la pantalla al girar); la pantalla del cajero es un canvas dinámico (drawScr); P3 tiene escena de día afuera con el cajero tapiado. AL AIRE: estudio + cabina B detrás del vidrio (z<-1.7), la silueta con auriculares se ilumina por el cartel AL AIRE. EL MUELLE: en P3 la corrida por el muelle es un loop de 18 m (z -30..-12) para que parezca infinito; la cocina del abuelo está en x=80. Las partes 2 y 3 de las tres ya tienen stills revisados sin errores. OJO: no usar 'pgrep -f render.py' dentro de un bash -c que contenga ese texto (se encuentra a sí mismo). Ciclo 4 día 2 programado el 2026-11-26 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE (P2); render ~0.35-0.4 s/f, ~6 min por video. Ciclo 4 día 3 (finales) programado el 2026-11-27 a las 08:00 CAJERO 24, 08:20 AL AIRE, 08:40 EL MUELLE. AL AIRE P3: se reencuadró a Walter (antes la cabeza quedaba cortada arriba). EL MUELLE P3: la escena de noche (botella al agua) subió a exp 1.6 / hemi .9 porque quedaba casi negra. Render ~6 min por video. Ciclo 5 día 1 programado el 2026-11-28 a las 08:00 PROBADOR 3, 08:20 EL PEDIDO, 08:40 CARRIL 4. PROBADOR 3: el espejo grande es un Reflector (three/examples) y lo que solo se ve en el espejo (la doble, la cortina abierta, 'me' en la posición de la cámara) se activa en MIR.onBeforeRender vía env({mirror:{show,hide}}). EL PEDIDO: la pantalla del celular es un canvas dinámico (drawScr); el celular va montado en el manubrio (mountPhone(k), k=1 lo acerca a cámara) porque vive en el rig: no inclinar la cámara para 'mirarlo'. CARRIL 4: la P3 se recortó a 59 s (línea de Hugo más corta); los partidores están en la punta lejana (z=-25.5) para no tapar la mano del borde. Las partes 2 y 3 de las tres ya tienen stills revisados. Render ~0.45 s/f, ~7 min por video.",
   "ciclos_completados": [
     {
       "ciclo": 1,
